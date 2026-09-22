@@ -1,0 +1,63 @@
+-------------------------------------------------------------------------------
+Test set: com.docencia.numeros.IntegerServiceTest
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 2, Errors: 4, Skipped: 0, Time elapsed: 0.034 s <<< FAILURE! -- in com.docencia.numeros.IntegerServiceTest
+com.docencia.numeros.IntegerServiceTest.esParNumeroNullLanzaExcepcion -- Time elapsed: 0.001 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at com.docencia.numeros.IntegerServiceTest.esParNumeroNullLanzaExcepcion(IntegerServiceTest.java:11)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.numeros.IntegerServiceTest.sumarDigitosNumeroNegativoDevuelveSuma -- Time elapsed: 0.003 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'esFechaFutura'
+	at com.docencia.numeros.IntegerServiceImpl.sumarDigitos(IntegerServiceImpl.java:17)
+	at com.docencia.numeros.IntegerServiceTest.sumarDigitosNumeroNegativoDevuelveSuma(IntegerServiceTest.java:12)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.numeros.IntegerServiceTest.esNumeroPrimoNumeroPrimoDevuelveTrue -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'esNumeroPrimo'
+	at com.docencia.numeros.IntegerServiceImpl.esNumeroPrimo(IntegerServiceImpl.java:31)
+	at com.docencia.numeros.IntegerServiceTest.esNumeroPrimoNumeroPrimoDevuelveTrue(IntegerServiceTest.java:15)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.numeros.IntegerServiceTest.esNumeroPrimoNumeroNoPrimoDevuelveFalse -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'esNumeroPrimo'
+	at com.docencia.numeros.IntegerServiceImpl.esNumeroPrimo(IntegerServiceImpl.java:31)
+	at com.docencia.numeros.IntegerServiceTest.esNumeroPrimoNumeroNoPrimoDevuelveFalse(IntegerServiceTest.java:16)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.numeros.IntegerServiceTest.calcularFactorialCeroDevuelveUno -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'calcularFactorial'
+	at com.docencia.numeros.IntegerServiceImpl.calcularFactorial(IntegerServiceImpl.java:37)
+	at com.docencia.numeros.IntegerServiceTest.calcularFactorialCeroDevuelveUno(IntegerServiceTest.java:17)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.numeros.IntegerServiceTest.calcularFactorialNumeroNegativoLanzaExcepcion -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <java.lang.IllegalArgumentException> but was: <java.lang.UnsupportedOperationException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at com.docencia.numeros.IntegerServiceTest.calcularFactorialNumeroNegativoLanzaExcepcion(IntegerServiceTest.java:18)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.lang.UnsupportedOperationException: Unimplemented method 'calcularFactorial'
+	at com.docencia.numeros.IntegerServiceImpl.calcularFactorial(IntegerServiceImpl.java:37)
+	at com.docencia.numeros.IntegerServiceTest.lambda$calcularFactorialNumeroNegativoLanzaExcepcion$2(IntegerServiceTest.java:18)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 6 more
+

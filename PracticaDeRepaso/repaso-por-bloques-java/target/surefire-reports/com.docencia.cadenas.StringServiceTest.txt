@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+Test set: com.docencia.cadenas.StringServiceTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.037 s <<< FAILURE! -- in com.docencia.cadenas.StringServiceTest
+com.docencia.cadenas.StringServiceTest.esPalindromoTextoPalindromoDevuelveTrue -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'esPalindromo'
+	at com.docencia.cadenas.StringServiceImpl.esPalindromo(StringServiceImpl.java:16)
+	at com.docencia.cadenas.StringServiceTest.esPalindromoTextoPalindromoDevuelveTrue(StringServiceTest.java:11)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.cadenas.StringServiceTest.esPalindromoIgnorandoEspaciosDevuelveTrue -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'esPalindromo'
+	at com.docencia.cadenas.StringServiceImpl.esPalindromo(StringServiceImpl.java:16)
+	at com.docencia.cadenas.StringServiceTest.esPalindromoIgnorandoEspaciosDevuelveTrue(StringServiceTest.java:12)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.cadenas.StringServiceTest.extraerInicialesNombreCompletoDevuelveIniciales -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'extraerIniciales'
+	at com.docencia.cadenas.StringServiceImpl.extraerIniciales(StringServiceImpl.java:41)
+	at com.docencia.cadenas.StringServiceTest.extraerInicialesNombreCompletoDevuelveIniciales(StringServiceTest.java:14)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.docencia.cadenas.StringServiceTest.invertirTextoDatosValidosDevuelveTextoInvertido -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.UnsupportedOperationException: Unimplemented method 'invertirTexto'
+	at com.docencia.cadenas.StringServiceImpl.invertirTexto(StringServiceImpl.java:47)
+	at com.docencia.cadenas.StringServiceTest.invertirTextoDatosValidosDevuelveTextoInvertido(StringServiceTest.java:15)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
