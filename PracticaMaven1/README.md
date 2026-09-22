@@ -1326,3 +1326,144 @@ Your branch is ahead of 'origin/main' by 3 commits.
 
 ---
 
+## Lección 21 · Proyecto final: gestor de tareas
+
+Se amplió el proyecto para integrar persistencia, pruebas y distribución en una entrega construible desde un clon limpio.
+
+### Requisitos funcionales implementados
+
+La consola permite **añadir**, **listar**, **completar** y **eliminar** tareas. Cada tarea tiene identificador, título y estado (`Tarea.java`). Un título vacío se rechaza (`IllegalArgumentException`) y un identificador inexistente se trata con un mensaje claro (`NoSuchElementException`, capturada en `Main` como `Error: ...`). Las tareas se guardan en un JSON externo (`RepositorioTareas.java`, con Gson) y se recuperan al iniciar; si el archivo no existe se empieza con una lista vacía, y si el JSON está dañado se informa del problema sin sobrescribir el archivo.
+
+### Diseño
+
+```
+src/main/java/com/codelearn/tareas/
+├── Main.java                # interacción de consola (comandos)
+├── Tarea.java                # identificador, título y estado
+├── GestorTareas.java          # operaciones del dominio
+└── RepositorioTareas.java    # lectura/escritura JSON
+src/test/java/com/codelearn/tareas/
+├── GestorTareasTest.java
+└── RepositorioTareasTest.java
+```
+
+Se eligió un intérprete de **comandos** (no menú numérico): `añadir <título>`, `completar <id>`, `eliminar <id>`, `listar`, `salir`. La ruta del archivo de datos se puede pasar como primer argumento; si no se indica, se usa `tareas.json` en el directorio desde el que se ejecuta el JAR (fuera de `src/`, y excluido de git por el `.gitignore`).
+
+**Comando**
+```bash
+./mvnw clean verify
+```
+**Resultado**
+```
+[INFO] Running com.codelearn.tareas.GestorTareasTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Running com.codelearn.tareas.RepositorioTareasTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+```
+
+`GestorTareasTest` cubre añadir, completar, eliminar y buscar un identificador inexistente. `RepositorioTareasTest` usa un directorio temporal (`@TempDir`) para probar guardar-y-cargar (ida y vuelta), un archivo inexistente (devuelve lista vacía) y un JSON inválido (lanza excepción sin tocar el archivo original).
+
+### Prueba manual de la consola
+
+**Comando**
+```bash
+java -jar target/gestor-tareas-1.0.0-all.jar
+```
+**Resultado**
+```
+Gestor de tareas. Comandos: añadir <titulo>, completar <id>, eliminar <id>, listar, salir
+> añadir Aprender Maven
+Tarea 1 creada
+> completar 1
+Tarea 1 completada
+> listar
+1 [completada] Aprender Maven
+> salir
+```
+
+Al volver a ejecutar el JAR sobre el mismo `tareas.json`, `listar` devuelve `1 [completada] Aprender Maven`: la tarea se recupera correctamente entre ejecuciones.
+
+### Versión 1.0.0 y etiqueta
+
+Se cambió la versión del `pom.xml` de `1.0.0-SNAPSHOT` a `1.0.0`, se verificó el build y se creó la etiqueta `v1.0.0`.
+
+**Comando**
+```bash
+./mvnw -Pdistribucion clean verify
+git tag v1.0.0
+```
+**Resultado**
+```
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Building jar: .../target/gestor-tareas-1.0.0.jar
+[INFO] Attaching shaded artifact.
+[INFO] BUILD SUCCESS
+```
+
+### Comprobación de entrega desde un clon limpio
+
+**Comando**
+```bash
+git clone . ../gestor-tareas-entrega
+cd ../gestor-tareas-entrega/PracticaMaven1
+./mvnw -Pdistribucion clean verify
+java -jar target/gestor-tareas-1.0.0-all.jar
+```
+**Resultado**
+```
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+Gestor de tareas. Comandos: añadir <titulo>, completar <id>, eliminar <id>, listar, salir
+> listar
+> salir
+```
+
+Con el JSON aún no creado en el clon, `listar` no muestra nada (lista vacía), tal y como se espera.
+
+### Ejercicio de revisión
+
+Al seguir **solo** las instrucciones del README desde la raíz del repositorio, el primer punto ambiguo fue no indicar que hay que entrar antes en la carpeta `PracticaMaven1`:
+
+**Comando (desde la raíz del repositorio, tal y como estaba escrito antes)**
+```bash
+./mvnw -Pdistribucion clean verify
+```
+**Resultado**
+```
+bash: ./mvnw: No such file or directory
+```
+
+**Corrección:** se añadió explícitamente el paso `cd PracticaMaven1` antes de cualquier comando `./mvnw`, tanto en esta sección como en la de comprobación de entrega, porque el proyecto Maven vive en una subcarpeta del repositorio y no en su raíz.
+
+Se comprobó también que git no contiene `target/`, el fichero mutable `tareas.json` ni credenciales:
+
+**Comando**
+```bash
+git ls-files | grep -iE "target/|tareas.json|secret|password|credencial"
+```
+**Resultado**
+```
+(sin resultados)
+```
+
+### Requisitos externos
+
+No se requiere ninguna configuración externa obligatoria para construir y ejecutar el proyecto: `./mvnw` descarga la distribución de Maven que fija el Wrapper, y todas las dependencias (Gson, JUnit) están en Maven Central. Los archivos `config/settings-publico.xml` y `settings-empresa.xml` de las lecciones 8-9 son solo para el escenario opcional de repositorios privados/empresariales y no son necesarios para esta entrega; no contienen credenciales.
+
+---
+
+## Resumen final
+
+Las 21 lecciones de la ruta *Maven y construcción de proyectos Java* están completas en `PracticaMaven1`: desde el primer proyecto Maven hasta un gestor de tareas con persistencia JSON, pruebas JUnit, Maven Wrapper, integración con Git/GitHub Actions y una entrega verificable con la etiqueta `v1.0.0` desde un clon limpio.
+
+**Comando de comprobación final**
+```bash
+./mvnw -Pdistribucion clean verify
+```
+**Resultado**
+```
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+```
