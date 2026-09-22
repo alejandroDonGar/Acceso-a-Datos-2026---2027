@@ -1420,6 +1420,8 @@ Después se quitó también Gson de `RepositorioTareas.java` (sigue declarado en
 
 De paso se separó el `if/else` de `Main.java` en su propio método (`procesarComando`), para que el bucle principal solo se ocupe de leer la entrada y mostrar los errores.
 
+Por último se documentaron las cuatro clases de `src/main/java/com/codelearn/tareas/` y las dos de test (`Tarea`, `GestorTareas`, `RepositorioTareas`, `Main`, `GestorTareasTest`, `RepositorioTareasTest`) con comentarios Javadoc: cada clase tiene un comentario arriba con `@author AlejandroDonGar` y una descripción corta, y cada método/constructor tiene su propio comentario explicando qué hace, con `@param` para cada parámetro y `@return` cuando devuelve algo.
+
 **Comando**
 ```bash
 ./mvnw -Pdistribucion clean verify

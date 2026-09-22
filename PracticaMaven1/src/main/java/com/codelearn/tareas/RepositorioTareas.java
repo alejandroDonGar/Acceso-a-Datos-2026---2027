@@ -6,8 +6,21 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lee y escribe las tareas en un archivo de texto con formato JSON,
+ * a mano (sin usar ninguna librería externa).
+ *
+ * @author AlejandroDonGar
+ */
 public class RepositorioTareas {
 
+    /**
+     * Carga las tareas guardadas en el archivo indicado.
+     *
+     * @param archivo ruta del archivo de tareas
+     * @return un gestor de tareas con las tareas leídas, o un gestor vacío
+     *         si el archivo no existe
+     */
     public GestorTareas cargar(Path archivo) throws IOException {
         if (!Files.exists(archivo)) {
             return new GestorTareas();
@@ -41,6 +54,14 @@ public class RepositorioTareas {
         return new GestorTareas(tareas, siguienteId);
     }
 
+    /**
+     * Convierte una línea de texto con una tarea (formato
+     * {@code {"id": 1, "titulo": "...", "completada": true}}) en un
+     * objeto Tarea.
+     *
+     * @param linea línea con los datos de una tarea
+     * @return la tarea leída de esa línea
+     */
     private Tarea leerTarea(String linea) {
         String[] campos = linea.split(",");
 
@@ -55,6 +76,12 @@ public class RepositorioTareas {
         return new Tarea(id, titulo, completada);
     }
 
+    /**
+     * Guarda las tareas del gestor en el archivo indicado, en formato JSON.
+     *
+     * @param gestor gestor con las tareas a guardar
+     * @param archivo ruta del archivo donde se escriben las tareas
+     */
     public void guardar(GestorTareas gestor, Path archivo) throws IOException {
         List<Tarea> tareas = gestor.listar();
 

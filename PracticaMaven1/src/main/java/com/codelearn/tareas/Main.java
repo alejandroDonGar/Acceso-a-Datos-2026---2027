@@ -5,8 +5,21 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Punto de entrada de la aplicación: una consola con comandos para
+ * añadir, completar, eliminar y listar tareas.
+ *
+ * @author AlejandroDonGar
+ */
 public class Main {
 
+    /**
+     * Arranca la aplicación: carga las tareas guardadas y lee comandos
+     * por teclado hasta que se escribe "salir".
+     *
+     * @param args si se indica un argumento, se usa como ruta del
+     *             archivo de tareas; si no, se usa "tareas.json"
+     */
     public static void main(String[] args) throws IOException {
         Path archivoDatos = args.length > 0 ? Path.of(args[0]) : Path.of("tareas.json");
         RepositorioTareas repositorio = new RepositorioTareas();
@@ -49,7 +62,17 @@ public class Main {
         }
     }
 
-    // Ejecuta un comando. Devuelve false cuando el comando es "salir".
+    /**
+     * Ejecuta un comando escrito por el usuario (añadir, completar,
+     * eliminar, listar o salir) y guarda los cambios en el archivo.
+     *
+     * @param comando nombre del comando escrito
+     * @param partes comando y argumento separados (el argumento puede faltar)
+     * @param gestor gestor con las tareas actuales
+     * @param repositorio repositorio usado para guardar los cambios
+     * @param archivoDatos archivo donde se guardan las tareas
+     * @return false si el comando es "salir", true en cualquier otro caso
+     */
     private static boolean procesarComando(String comando, String[] partes, GestorTareas gestor,
                                             RepositorioTareas repositorio, Path archivoDatos) throws IOException {
         if (comando.equals("añadir") || comando.equals("anadir")) {

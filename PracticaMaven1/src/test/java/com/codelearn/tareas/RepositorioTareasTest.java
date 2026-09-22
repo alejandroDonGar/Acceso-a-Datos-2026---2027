@@ -9,11 +9,20 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas de RepositorioTareas: guardar y cargar tareas desde un archivo.
+ *
+ * @author AlejandroDonGar
+ */
 class RepositorioTareasTest {
 
     @TempDir
     Path directorioTemporal;
 
+    /**
+     * Comprueba que las tareas guardadas se recuperan igual al cargarlas
+     * (mismo título y mismo estado de completada).
+     */
     @Test
     void guardarYCargarDevuelveLasMismasTareas() throws IOException {
         RepositorioTareas repositorio = new RepositorioTareas();
@@ -33,6 +42,10 @@ class RepositorioTareasTest {
         assertFalse(gestorCargado.listar().get(1).isCompletada());
     }
 
+    /**
+     * Comprueba que cargar un archivo que no existe devuelve un gestor
+     * de tareas vacío, sin lanzar ningún error.
+     */
     @Test
     void cargarUnArchivoInexistenteDevuelveUnGestorVacio() throws IOException {
         RepositorioTareas repositorio = new RepositorioTareas();
@@ -43,6 +56,10 @@ class RepositorioTareasTest {
         assertEquals(0, gestor.listar().size());
     }
 
+    /**
+     * Comprueba que cargar un archivo con JSON inválido lanza una
+     * excepción y no modifica el archivo original.
+     */
     @Test
     void cargarUnJsonInvalidoInformaDelProblemaSinSobrescribir() throws IOException {
         RepositorioTareas repositorio = new RepositorioTareas();
