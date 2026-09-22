@@ -2,7 +2,6 @@ package com.codelearn.tareas;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class GestorTareas {
     private final List<Tarea> tareas = new ArrayList<>();
@@ -20,27 +19,29 @@ public class GestorTareas {
         if (titulo == null || titulo.isBlank()) {
             throw new IllegalArgumentException("El título es obligatorio");
         }
-        var tarea = new Tarea(siguienteId, titulo, false);
+        Tarea tarea = new Tarea(siguienteId, titulo, false);
         siguienteId++;
         tareas.add(tarea);
         return tarea;
     }
 
     public void completar(int id) {
-        var tarea = buscar(id);
+        Tarea tarea = buscar(id);
         tarea.marcarCompletada();
     }
 
     public void eliminar(int id) {
-        var tarea = buscar(id);
+        Tarea tarea = buscar(id);
         tareas.remove(tarea);
     }
 
     public Tarea buscar(int id) {
-        return tareas.stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("No existe una tarea con id " + id));
+        for (Tarea tarea : tareas) {
+            if (tarea.getId() == id) {
+                return tarea;
+            }
+        }
+        throw new IllegalArgumentException("No existe una tarea con id " + id);
     }
 
     public List<Tarea> listar() {

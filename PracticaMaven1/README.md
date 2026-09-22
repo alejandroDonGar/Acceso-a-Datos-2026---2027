@@ -3,8 +3,6 @@
 Registro de la práctica guiada de Maven (CodeLearn Academy), lección a lección.
 Cada bloque muestra el comando ejecutado en la terminal (WSL Ubuntu) y el resultado real que devolvió.
 
----
-
 ## Lección 1 · Qué problema resuelve Maven
 
 Ejercicio realizado fuera del proyecto final, en una carpeta de práctica (`leccion01-practica/`), tal como pide el enunciado.
@@ -56,8 +54,6 @@ Default locale: en, platform encoding: UTF-8
 OS name: "linux", version: "6.18.33.2-microsoft-standard-wsl2", arch: "amd64", family: "unix"
 ```
 
----
-
 ## Lección 3 · Crear el primer proyecto Maven
 
 Se guardó `pom.xml` (coordenadas `com.codelearn:gestor-tareas:1.0.0-SNAPSHOT`) y `src/main/java/com/codelearn/tareas/Main.java` como indica la lección.
@@ -72,8 +68,6 @@ mvn validate
 ```
 
 **Ejercicio** — se cambió `artifactId` a `gestor-tareas-test`, se ejecutó `mvn validate` (BUILD SUCCESS de nuevo) y se devolvió a `gestor-tareas`.
-
----
 
 ## Lección 4 · Compilar y entender los archivos generados
 
@@ -121,8 +115,6 @@ mvn compile
 [INFO] BUILD SUCCESS   (mvn clean, borra target/)
 [INFO] BUILD SUCCESS   (mvn compile, lo reconstruye)
 ```
-
----
 
 ## Lección 5 · Ciclos de vida, fases y goals
 
@@ -187,8 +179,6 @@ sudo: a password is required
 
 Como no se dispone de esa contraseña, esta parte de la práctica (instalar JDK 17, alternar entre JDK 17/21 y comprobar el fallo de build con JDK 17) se deja sin hacer. El resto de la lección (fases del ciclo de vida, `mvn clean verify` con JDK 21) sí queda completado arriba.
 
----
-
 ## Lección 6 · Añadir y utilizar una dependencia
 
 Se añadió a `pom.xml` la dependencia Gson y se actualizó `Main.java` para usarla (código en el repositorio).
@@ -233,8 +223,6 @@ mvn compile
 ```
 
 Se restauró la dependencia y `mvn compile` volvió a terminar en `BUILD SUCCESS`.
-
----
 
 ## Lección 7 · Maven Central y el repositorio local
 
@@ -281,8 +269,6 @@ mvn -o package
 
 **Ejercicio** — `mvn install` no publica el proyecto para otras personas porque solo copia el artefacto y su POM al repositorio *local* (`~/.m2/repository`), que vive únicamente en esta máquina. Para que otros lo usen hace falta `mvn deploy` contra un repositorio remoto configurado (ver lección 8).
 
----
-
 ## Lección 8 · Repositorios externos y settings.xml
 
 Se creó `config/settings-publico.xml` con un perfil `repositorio-publico` que declara explícitamente Maven Central (contenido en el repositorio).
@@ -328,8 +314,6 @@ The following profiles are active:
 
 Sin `-P` no aparece ningún perfil activo (la lista sale vacía): el perfil `repositorio-publico` está declarado en `settings.xml` pero no se activa por defecto, así que ese repositorio extra no se añade. El proyecto sigue pudiendo descargar de Central de todas formas porque Central está disponible por defecto en Maven, independientemente de este perfil.
 
----
-
 ## Lección 9 · Repositorios privados, mirrors y proxy
 
 Esta lección requiere un servidor Nexus/Artifactory real con una cuenta autorizada; las URLs `.example` que aparecen en la página son marcadores de posición, no servicios reales. Al no disponer de un repositorio privado, se sigue la propia indicación del ejercicio: **"Si no dispones de servicio privado, analiza el XML y deja esta práctica de conexión pendiente hasta tener acceso."**
@@ -348,8 +332,6 @@ mvn -s settings-empresa.xml clean verify
 - Códigos de error a vigilar: `401` (credenciales inválidas), `403` (sin permiso), `404` (repositorio/artefacto no encontrado), errores de certificado (repositorio con certificado no confiable).
 
 **Estado:** práctica de conexión dejada pendiente hasta disponer de un servicio privado real, tal y como permite el propio enunciado del ejercicio. No se ha creado ningún `settings-empresa.xml` con credenciales de ejemplo para evitar dejar secretos (aunque sean falsos) en el repositorio.
-
----
 
 ## Lección 10 · Profiles: activar configuraciones de Maven
 
@@ -447,8 +429,6 @@ The following profiles are active:
 
 El perfil `informe` se activa solo cuando se pasa `-Dinforme=true`; `distribucion` sigue siendo opcional y se activa explícitamente con `-P`.
 
----
-
 ## Lección 11 · Dependencias transitivas, scopes y conflictos
 
 **Comando**
@@ -522,8 +502,6 @@ mvn clean package
 ```
 (confirma que el proyecto queda otra vez limpio, solo con Gson)
 
----
-
 ## Lección 12 · Propiedades y gestión de versiones
 
 Se añadieron a `<properties>` las versiones de Gson, JUnit y de todos los plugins usados (`gson.version`, `junit.version`, `maven-compiler-plugin.version`, `maven-surefire-plugin.version`, `maven-jar-plugin.version`, `maven-shade-plugin.version`, `maven-dependency-plugin.version`, `maven-wrapper-plugin.version`), y la dependencia de Gson pasó a usar `<version>${gson.version}</version>`.
@@ -563,8 +541,6 @@ mvn help:effective-pom -Doutput=target/pom-efectivo.xml
 ```
 
 **Ejercicio** — revisando `target/pom-efectivo.xml` (sin copiarlo sobre el POM original, es solo diagnóstico): la versión de Gson (`2.11.0`) sale de la propiedad `gson.version` a través del bloque `<dependencyManagement>`; las versiones de JUnit (`5.11.0` para los artefactos `junit-jupiter-*`, `1.11.0` para los `junit-platform-*`) salen del BOM `junit-bom` importado, que alinea automáticamente cada artefacto del ecosistema JUnit 5 a la versión correspondiente de su propia política de versiones.
-
----
 
 ## Lección 13 · Añadir y ejecutar pruebas con JUnit
 
@@ -623,8 +599,6 @@ mvn test
 [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 [INFO] BUILD SUCCESS
 ```
-
----
 
 ## Lección 14 · El build como comprobación de calidad
 
@@ -715,8 +689,6 @@ mvn clean verify ; echo $?
 [INFO] BUILD SUCCESS
 0
 ```
-
----
 
 ## Lección 15 · Recursos y configuración de la aplicación
 
@@ -814,8 +786,6 @@ mvn clean package
 [INFO] BUILD SUCCESS
 ```
 
----
-
 ## Lección 16 · Empaquetar y ejecutar la aplicación
 
 Se añadió al `maven-jar-plugin` existente un bloque `<configuration><archive><manifest>` con `<mainClass>com.codelearn.tareas.Main</mainClass>`.
@@ -911,8 +881,6 @@ java -jar gestor-tareas-1.0.0-SNAPSHOT-all.jar
 
 Ambas formas funcionan igual fuera del proyecto: lo importante es llevar siempre el JAR junto con sus dependencias (bien como carpeta `lib/` + classpath, bien como JAR `-all` autocontenido).
 
----
-
 ## Lección 17 · Crear y utilizar Maven Wrapper
 
 **Comando**
@@ -981,8 +949,6 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 ```
 
 **Qué controla cada parte:** el Wrapper fija y descarga su **propia** distribución de Maven (3.9.11, en `.m2/wrapper/dists/`, independiente de cualquier Maven instalado globalmente); por eso `mvnw.cmd` usa 3.9.11 mientras que el `mvn` global de esa misma máquina resulta ser 3.9.16 (instalado en `C:\Tools`). En cambio, el **JDK** (`17.0.19` en ambos casos en esa terminal Windows, `21.0.12` en la terminal WSL) sigue dependiendo del entorno — el Wrapper no lo fija ni lo descarga, usa el que encuentre disponible en el sistema donde se ejecuta.
-
----
 
 ## Lección 18 · Maven dentro del flujo Git
 
@@ -1106,8 +1072,6 @@ git commit -m "Anade prueba: varias tareas mantienen el orden"
 
 **Cómo reproducir el build desde un clon:** clonar el repositorio, entrar en la carpeta `PracticaMaven1` y ejecutar `./mvnw clean verify` (o `.\mvnw.cmd clean verify` en Windows) — no hace falta tener Maven instalado globalmente, solo un JDK compatible; el propio Wrapper descarga la distribución de Maven exacta que fija el proyecto.
 
----
-
 ## Lección 19 · Automatizar el build en CI
 
 El repositorio ya usa GitHub como remoto, así que se configuró GitHub Actions. Se creó `.github/workflows/maven.yml` (en la raíz del repositorio) con JDK 21 (Temurin), caché de Maven, permisos de ejecución del Wrapper, `./mvnw -Pdistribucion clean verify` y subida del JAR `-all` como artefacto:
@@ -1154,8 +1118,6 @@ git commit -m "Añade workflow de CI con GitHub Actions"
 ```
 
 El job se ejecutará en GitHub Actions en el repositorio `alejandroDonar/Acceso-a-Datos-2026---2027` en el próximo `git push`. No se ha configurado acceso a repositorios privados (sección opcional de la lección) por no ser necesario para este proyecto.
-
----
 
 ## Lección 20 · Diagnosticar y reparar problemas de Maven
 
@@ -1324,15 +1286,13 @@ Your branch is ahead of 'origin/main' by 3 commits.
 [INFO] BUILD SUCCESS
 ```
 
----
-
 ## Lección 21 · Proyecto final: gestor de tareas
 
 Se amplió el proyecto para integrar persistencia, pruebas y distribución en una entrega construible desde un clon limpio.
 
 ### Requisitos funcionales implementados
 
-La consola permite **añadir**, **listar**, **completar** y **eliminar** tareas. Cada tarea tiene identificador, título y estado (`Tarea.java`). Un título vacío se rechaza (`IllegalArgumentException`) y un identificador inexistente se trata con un mensaje claro (`NoSuchElementException`, capturada en `Main` como `Error: ...`). Las tareas se guardan en un JSON externo (`RepositorioTareas.java`, con Gson) y se recuperan al iniciar; si el archivo no existe se empieza con una lista vacía, y si el JSON está dañado se informa del problema sin sobrescribir el archivo.
+La consola permite **añadir**, **listar**, **completar** y **eliminar** tareas. Cada tarea tiene identificador, título y estado (`Tarea.java`). Un título vacío y un identificador inexistente se rechazan con `IllegalArgumentException`, capturada en `Main` como `Error: ...`. Las tareas se guardan en un JSON externo (`RepositorioTareas.java`, con Gson) y se recuperan al iniciar; si el archivo no existe se empieza con una lista vacía, y si el JSON está dañado se informa del problema sin sobrescribir el archivo.
 
 ### Diseño
 
@@ -1452,7 +1412,19 @@ git ls-files | grep -iE "target/|tareas.json|secret|password|credencial"
 
 No se requiere ninguna configuración externa obligatoria para construir y ejecutar el proyecto: `./mvnw` descarga la distribución de Maven que fija el Wrapper, y todas las dependencias (Gson, JUnit) están en Maven Central. Los archivos `config/settings-publico.xml` y `settings-empresa.xml` de las lecciones 8-9 son solo para el escenario opcional de repositorios privados/empresariales y no son necesarios para esta entrega; no contienen credenciales.
 
----
+## Simplificación del código
+
+Tras terminar el proyecto final se revisó el código de `Main.java`, `GestorTareas.java`, `RepositorioTareas.java` y los tests: se quitó `var` (tipos explícitos en su lugar), el uso de streams (`buscar()` ahora usa un bucle `for` normal) y `NoSuchElementException` (ahora `buscar()` lanza `IllegalArgumentException`, igual que la validación del título). El `switch` con flechas de `Main.java` se cambió por un `if/else` clásico. El comportamiento no cambió: las mismas 11 pruebas siguen pasando y la consola da los mismos resultados.
+
+**Comando**
+```bash
+./mvnw -Pdistribucion clean verify
+```
+**Resultado**
+```
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+```
 
 ## Resumen final
 

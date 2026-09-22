@@ -16,16 +16,16 @@ class RepositorioTareasTest {
 
     @Test
     void guardarYCargarDevuelveLasMismasTareas() throws IOException {
-        var repositorio = new RepositorioTareas();
-        var archivo = directorioTemporal.resolve("tareas.json");
+        RepositorioTareas repositorio = new RepositorioTareas();
+        Path archivo = directorioTemporal.resolve("tareas.json");
 
-        var gestor = new GestorTareas();
+        GestorTareas gestor = new GestorTareas();
         gestor.anadir("Aprender Maven");
         gestor.anadir("Escribir el README");
         gestor.completar(1);
 
         repositorio.guardar(gestor, archivo);
-        var gestorCargado = repositorio.cargar(archivo);
+        GestorTareas gestorCargado = repositorio.cargar(archivo);
 
         assertEquals(2, gestorCargado.listar().size());
         assertEquals("Aprender Maven", gestorCargado.listar().get(0).getTitulo());
@@ -35,18 +35,18 @@ class RepositorioTareasTest {
 
     @Test
     void cargarUnArchivoInexistenteDevuelveUnGestorVacio() throws IOException {
-        var repositorio = new RepositorioTareas();
-        var archivo = directorioTemporal.resolve("no-existe.json");
+        RepositorioTareas repositorio = new RepositorioTareas();
+        Path archivo = directorioTemporal.resolve("no-existe.json");
 
-        var gestor = repositorio.cargar(archivo);
+        GestorTareas gestor = repositorio.cargar(archivo);
 
         assertEquals(0, gestor.listar().size());
     }
 
     @Test
     void cargarUnJsonInvalidoInformaDelProblemaSinSobrescribir() throws IOException {
-        var repositorio = new RepositorioTareas();
-        var archivo = directorioTemporal.resolve("corrupto.json");
+        RepositorioTareas repositorio = new RepositorioTareas();
+        Path archivo = directorioTemporal.resolve("corrupto.json");
         Files.writeString(archivo, "{ esto no es json valido ");
 
         assertThrows(IOException.class, () -> repositorio.cargar(archivo));

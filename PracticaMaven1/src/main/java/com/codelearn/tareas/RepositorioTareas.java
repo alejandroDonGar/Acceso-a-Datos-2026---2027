@@ -37,7 +37,7 @@ public class RepositorioTareas {
     }
 
     public void guardar(GestorTareas gestor, Path archivo) throws IOException {
-        var datos = new Datos();
+        Datos datos = new Datos();
         datos.tareas = gestor.listar();
         datos.siguienteId = gestor.getSiguienteId();
         if (archivo.getParent() != null) {
