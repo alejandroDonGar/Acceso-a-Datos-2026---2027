@@ -35,29 +35,9 @@ public class Main {
             String comando = partes[0];
 
             try {
-                if (comando.equals("añadir") || comando.equals("anadir")) {
-                    Tarea tarea = gestor.anadir(partes.length > 1 ? partes[1] : "");
-                    repositorio.guardar(gestor, archivoDatos);
-                    System.out.println("Tarea " + tarea.getId() + " creada");
-                } else if (comando.equals("completar")) {
-                    int id = Integer.parseInt(partes[1].trim());
-                    gestor.completar(id);
-                    repositorio.guardar(gestor, archivoDatos);
-                    System.out.println("Tarea " + id + " completada");
-                } else if (comando.equals("eliminar")) {
-                    int id = Integer.parseInt(partes[1].trim());
-                    gestor.eliminar(id);
-                    repositorio.guardar(gestor, archivoDatos);
-                    System.out.println("Tarea " + id + " eliminada");
-                } else if (comando.equals("listar")) {
-                    List<Tarea> tareas = gestor.listar();
-                    for (Tarea tarea : tareas) {
-                        System.out.println(tarea);
-                    }
-                } else if (comando.equals("salir")) {
+                boolean seguir = procesarComando(comando, partes, gestor, repositorio, archivoDatos);
+                if (!seguir) {
                     return;
-                } else {
-                    System.out.println("Comando no reconocido: " + comando);
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Error: falta el argumento del comando " + comando);
@@ -67,5 +47,35 @@ public class Main {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }
+
+    // Ejecuta un comando. Devuelve false cuando el comando es "salir".
+    private static boolean procesarComando(String comando, String[] partes, GestorTareas gestor,
+                                            RepositorioTareas repositorio, Path archivoDatos) throws IOException {
+        if (comando.equals("añadir") || comando.equals("anadir")) {
+            Tarea tarea = gestor.anadir(partes.length > 1 ? partes[1] : "");
+            repositorio.guardar(gestor, archivoDatos);
+            System.out.println("Tarea " + tarea.getId() + " creada");
+        } else if (comando.equals("completar")) {
+            int id = Integer.parseInt(partes[1].trim());
+            gestor.completar(id);
+            repositorio.guardar(gestor, archivoDatos);
+            System.out.println("Tarea " + id + " completada");
+        } else if (comando.equals("eliminar")) {
+            int id = Integer.parseInt(partes[1].trim());
+            gestor.eliminar(id);
+            repositorio.guardar(gestor, archivoDatos);
+            System.out.println("Tarea " + id + " eliminada");
+        } else if (comando.equals("listar")) {
+            List<Tarea> tareas = gestor.listar();
+            for (Tarea tarea : tareas) {
+                System.out.println(tarea);
+            }
+        } else if (comando.equals("salir")) {
+            return false;
+        } else {
+            System.out.println("Comando no reconocido: " + comando);
+        }
+        return true;
     }
 }

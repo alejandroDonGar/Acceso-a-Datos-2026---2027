@@ -28,12 +28,10 @@ public class RepositorioTareas {
             for (String linea : lineas) {
                 String lineaLimpia = linea.trim();
                 if (lineaLimpia.startsWith("\"siguienteId\"")) {
-                    siguienteId = leerNumeroDespuesDeDosPuntos(lineaLimpia);
+                    String[] partes = lineaLimpia.split(":");
+                    siguienteId = Integer.parseInt(partes[1].replace(",", "").trim());
                 } else if (lineaLimpia.contains("\"id\"")) {
-                    int id = leerNumeroEntre(lineaLimpia, "\"id\": ", ",");
-                    String titulo = leerTextoEntre(lineaLimpia, "\"titulo\": \"", "\",");
-                    boolean completada = lineaLimpia.contains("\"completada\": true");
-                    tareas.add(new Tarea(id, titulo, completada));
+                    tareas.add(leerTarea(lineaLimpia));
                 }
             }
         } catch (RuntimeException e) {
@@ -43,59 +41,45 @@ public class RepositorioTareas {
         return new GestorTareas(tareas, siguienteId);
     }
 
+    private Tarea leerTarea(String linea) {
+        String[] campos = linea.split(",");
+
+        String[] campoId = campos[0].split(":");
+        int id = Integer.parseInt(campoId[1].trim());
+
+        String[] campoTitulo = campos[1].split(":", 2);
+        String titulo = campoTitulo[1].trim().replace("\"", "");
+
+        boolean completada = campos[2].contains("true");
+
+        return new Tarea(id, titulo, completada);
+    }
+
     public void guardar(GestorTareas gestor, Path archivo) throws IOException {
         List<Tarea> tareas = gestor.listar();
 
-        StringBuilder texto = new StringBuilder();
-        texto.append("{\n");
-        texto.append("  \"siguienteId\": ").append(gestor.getSiguienteId()).append(",\n");
-        texto.append("  \"tareas\": [\n");
+        String texto = "{\n";
+        texto = texto + "  \"siguienteId\": " + gestor.getSiguienteId() + ",\n";
+        texto = texto + "  \"tareas\": [\n";
+
         for (int i = 0; i < tareas.size(); i++) {
             Tarea tarea = tareas.get(i);
-            texto.append("    {\"id\": ").append(tarea.getId());
-            texto.append(", \"titulo\": \"").append(escapar(tarea.getTitulo())).append("\"");
-            texto.append(", \"completada\": ").append(tarea.isCompletada());
-            texto.append("}");
+            String titulo = tarea.getTitulo().replace("\"", "");
+            String linea = "    {\"id\": " + tarea.getId()
+                    + ", \"titulo\": \"" + titulo + "\""
+                    + ", \"completada\": " + tarea.isCompletada() + "}";
             if (i < tareas.size() - 1) {
-                texto.append(",");
+                linea = linea + ",";
             }
-            texto.append("\n");
+            texto = texto + linea + "\n";
         }
-        texto.append("  ]\n");
-        texto.append("}\n");
+
+        texto = texto + "  ]\n";
+        texto = texto + "}\n";
 
         if (archivo.getParent() != null) {
             Files.createDirectories(archivo.getParent());
         }
-        Files.writeString(archivo, texto.toString());
-    }
-
-    private String escapar(String texto) {
-        return texto.replace("\\", "\\\\").replace("\"", "\\\"");
-    }
-
-    private String desescapar(String texto) {
-        return texto.replace("\\\"", "\"").replace("\\\\", "\\");
-    }
-
-    private int leerNumeroDespuesDeDosPuntos(String linea) {
-        int posDosPuntos = linea.indexOf(":");
-        String resto = linea.substring(posDosPuntos + 1).trim();
-        resto = resto.replace(",", "");
-        return Integer.parseInt(resto);
-    }
-
-    private int leerNumeroEntre(String linea, String inicio, String fin) {
-        int desde = linea.indexOf(inicio) + inicio.length();
-        int hasta = linea.indexOf(fin, desde);
-        String numero = linea.substring(desde, hasta).trim();
-        return Integer.parseInt(numero);
-    }
-
-    private String leerTextoEntre(String linea, String inicio, String fin) {
-        int desde = linea.indexOf(inicio) + inicio.length();
-        int hasta = linea.indexOf(fin, desde);
-        String texto = linea.substring(desde, hasta);
-        return desescapar(texto);
+        Files.writeString(archivo, texto);
     }
 }
