@@ -1292,7 +1292,7 @@ Se amplió el proyecto para integrar persistencia, pruebas y distribución en un
 
 ### Requisitos funcionales implementados
 
-La consola permite **añadir**, **listar**, **completar** y **eliminar** tareas. Cada tarea tiene identificador, título y estado (`Tarea.java`). Un título vacío y un identificador inexistente se rechazan con `IllegalArgumentException`, capturada en `Main` como `Error: ...`. Las tareas se guardan en un JSON externo (`RepositorioTareas.java`, con Gson) y se recuperan al iniciar; si el archivo no existe se empieza con una lista vacía, y si el JSON está dañado se informa del problema sin sobrescribir el archivo.
+La consola permite **añadir**, **listar**, **completar** y **eliminar** tareas. Cada tarea tiene identificador, título y estado (`Tarea.java`). Un título vacío y un identificador inexistente se rechazan con `IllegalArgumentException`, capturada en `Main` como `Error: ...`. Las tareas se guardan en un JSON externo (`RepositorioTareas.java`, leyendo y escribiendo el texto a mano con `String`, sin ninguna librería externa) y se recuperan al iniciar; si el archivo no existe se empieza con una lista vacía, y si el JSON está dañado se informa del problema sin sobrescribir el archivo.
 
 ### Diseño
 
@@ -1414,7 +1414,9 @@ No se requiere ninguna configuración externa obligatoria para construir y ejecu
 
 ## Simplificación del código
 
-Tras terminar el proyecto final se revisó el código de `Main.java`, `GestorTareas.java`, `RepositorioTareas.java` y los tests: se quitó `var` (tipos explícitos en su lugar), el uso de streams (`buscar()` ahora usa un bucle `for` normal) y `NoSuchElementException` (ahora `buscar()` lanza `IllegalArgumentException`, igual que la validación del título). El `switch` con flechas de `Main.java` se cambió por un `if/else` clásico. El comportamiento no cambió: las mismas 11 pruebas siguen pasando y la consola da los mismos resultados.
+Tras terminar el proyecto final se revisó el código de `Main.java`, `GestorTareas.java`, `RepositorioTareas.java` y los tests, para que use solo lo que se ha visto en el curso: se quitó `var` (tipos explícitos en su lugar), el uso de streams (`buscar()` ahora usa un bucle `for` normal) y `NoSuchElementException` (ahora `buscar()` lanza `IllegalArgumentException`, igual que la validación del título). El `switch` con flechas de `Main.java` se cambió por un `if/else` clásico. El comportamiento no cambió: las mismas 11 pruebas siguen pasando y la consola da los mismos resultados.
+
+Después se quitó también Gson de `RepositorioTareas.java` (sigue declarado en el `pom.xml` porque las lecciones 6-15 piden añadirlo como dependencia de ejemplo, pero el proyecto final ya no llama a su API). Ahora `RepositorioTareas` lee y escribe el JSON a mano, con `String`, `StringBuilder` y las clases de `java.nio.file`: al guardar construye el texto línea a línea, y al cargar comprueba primero que el archivo tiene la forma esperada (empieza y termina con llave y contiene `"siguienteId"` y `"tareas"`) y luego busca cada dato con `indexOf`/`substring`. Si el archivo no tiene esa forma, se lanza `IOException` sin tocar el archivo, igual que antes.
 
 **Comando**
 ```bash
