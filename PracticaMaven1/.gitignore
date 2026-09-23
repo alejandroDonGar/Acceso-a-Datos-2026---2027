@@ -1,0 +1,6 @@
+target/
+.idea/
+*.iml
+.vscode/
+tareas.json
+settings-empresa.xml
