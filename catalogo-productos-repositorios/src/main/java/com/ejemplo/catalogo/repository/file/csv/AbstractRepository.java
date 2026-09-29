@@ -10,8 +10,10 @@ import java.util.Optional;
 
 public abstract class AbstractRepository implements IRepository {
     private Path path;
-    private List<Producto> productos;
-
+    List<Producto> productos;
+    public Path getPath() {
+        return path;
+    }
     public AbstractRepository (Path path) {
         if(path == null) {
             throw new IllegalArgumentException("El archivo no puede ser nulo.");
@@ -25,13 +27,6 @@ public abstract class AbstractRepository implements IRepository {
             }
         }
     }
-
-    public Path getPath() {if (path == null) {
-        throw new RuntimeException("El archivo no puede ser nulo.");
-    }
-        return path;
-    }
-
 
     public abstract void saveAll(List<Producto> productos);
     public abstract List<Producto> load();
