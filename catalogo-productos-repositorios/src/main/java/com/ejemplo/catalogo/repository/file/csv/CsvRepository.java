@@ -17,13 +17,8 @@ import java.util.Optional;
 
 public class CsvRepository extends AbstractRepository {
 
-    private final CSVFormat inputFormat = CSVFormat.DEFAULT.builder()
-            .setHeader()
-            .setSkipHeaderRecord(true)
-            .get();
-    private final CSVFormat outputFormat = CSVFormat.DEFAULT.builder()
-            .setHeader("id", "nombre", "precio")
-            .get();
+    private final CSVFormat inputFormat = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).get();
+    private final CSVFormat outputFormat = CSVFormat.DEFAULT.builder().setHeader("id", "nombre", "precio").get();
 
     public CsvRepository(Path path) {
         super(path);

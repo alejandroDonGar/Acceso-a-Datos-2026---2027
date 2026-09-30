@@ -14,6 +14,7 @@ public abstract class AbstractRepository implements IRepository {
     public Path getPath() {
         return path;
     }
+    // En la clase abstracta es donde se comprueba si el path existe
     public AbstractRepository (Path path) {
         if(path == null) {
             throw new IllegalArgumentException("El archivo no puede ser nulo.");
@@ -27,10 +28,11 @@ public abstract class AbstractRepository implements IRepository {
             }
         }
     }
-
+    // Metodos abstractos que se usaran en la clase CsvRepository
     public abstract void saveAll(List<Producto> productos);
     public abstract List<Producto> load();
 
+    // Metodos generales que se implementan dentro de la clase abstracta:
     @Override
     public List<Producto> findAll() {
         return productos;
@@ -55,7 +57,7 @@ public abstract class AbstractRepository implements IRepository {
         if(producto == null || producto.id() < 0) {
             return false;
         }
-        // Este codigo es mejor pero de momento no funciona porque en la clase "Producto" no tenemos equals
+        // Este codigo es mejor pero de momento no funciona porque en la clase "Producto" no tenemos equals de momento
         //
         // int posicion = productos.indexOf(producto);
         // if(posicion < 0) {

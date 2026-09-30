@@ -45,8 +45,7 @@ public class JsonRepository extends AbstractRepository {
     @Override
     public List<Producto> load() {
         try {
-            List<Producto> leidos = mapper.readValue(
-                    getPath().toFile(), new TypeReference<List<Producto>>() {});
+            List<Producto> leidos = mapper.readValue(getPath().toFile(), new TypeReference<List<Producto>>() {});
             if (leidos == null) {
                 throw new IllegalArgumentException("El JSON debe contener una lista, no null");
             }
