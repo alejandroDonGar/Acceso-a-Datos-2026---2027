@@ -1,0 +1,11 @@
+# Compilados de Maven y Java (se regeneran con mvn compile / javac)
+target/
+*.class
+
+# Python
+__pycache__/
+
+# Configuración personal del IDE (distinta en cada PC)
+.idea/workspace.xml
+.idea/shelf/
+*.code-workspace
