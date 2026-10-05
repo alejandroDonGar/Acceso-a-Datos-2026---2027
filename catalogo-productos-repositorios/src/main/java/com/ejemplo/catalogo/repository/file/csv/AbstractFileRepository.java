@@ -65,7 +65,7 @@ public abstract class AbstractFileRepository <T extends Identifiable<ID>, ID> im
         }
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).id() == element.id()) {
-                list.set(i, element);writeAll(list);
+                list.set(i, element); writeAll(list);
                 return true;
             }
         }
