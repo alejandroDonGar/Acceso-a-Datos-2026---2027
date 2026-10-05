@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ProductoXmlRepository
-        extends AbstractFileRepository<Producto, Long>
-        implements IProductoRepository {
+public class ProductoXmlRepository extends AbstractFileRepository<Producto, Long> implements IProductoRepository {
 
     private final Path path;
     private final XmlMapper mapper;
@@ -21,17 +19,18 @@ public class ProductoXmlRepository
 
     public ProductoXmlRepository(Path path, XmlMapper mapper) {
         this.path = path;
+        list = readAll();
         this.mapper = mapper;
     }
 
     @Override
     protected Long getId(Producto producto) {
-        throw new UnsupportedOperationException("Función no implementada");
+        return producto.id();
     }
 
     @Override
     protected List<Producto> readAll() throws IOException {
-        throw new UnsupportedOperationException("Función no implementada");
+
     }
 
     @Override

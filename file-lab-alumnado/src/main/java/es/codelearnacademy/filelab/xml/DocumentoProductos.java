@@ -12,17 +12,19 @@ public class DocumentoProductos {
 
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "producto")
-    private List<Producto> productos = new ArrayList<>();
+    private List<Producto> productos;
 
     public DocumentoProductos() {
     }
 
     public DocumentoProductos(List<Producto> productos) {
-        this.productos = productos;
+        this.productos = new ArrayList<>();
     }
 
     public List<Producto> getProductos() {
-        throw new UnsupportedOperationException("Función no implementada");
+        DocumentoProductos documentoProductos = new DocumentoProductos();
+        documentoProductos.setProductos(productos);
+        return documentoProductos.getProductos();
     }
 
     public void setProductos(List<Producto> productos) {

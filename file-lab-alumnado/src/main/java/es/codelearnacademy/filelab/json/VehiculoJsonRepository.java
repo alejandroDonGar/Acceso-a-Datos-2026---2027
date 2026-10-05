@@ -12,16 +12,15 @@ public class VehiculoJsonRepository
         extends AbstractFileRepository<Vehiculo, String>
         implements IVehiculoRepository {
 
-    private final Path path;
     private final ObjectMapper mapper = new ObjectMapper();
 
     public VehiculoJsonRepository(Path path) {
-        this.path = path;
+        super(path);
     }
 
     @Override
     protected String getId(Vehiculo vehiculo) {
-        throw new UnsupportedOperationException("Función no implementada");
+        return vehiculo.toString();
     }
 
     @Override

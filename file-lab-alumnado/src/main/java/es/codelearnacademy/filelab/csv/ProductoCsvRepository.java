@@ -25,7 +25,7 @@ public class ProductoCsvRepository extends AbstractFileRepository<Producto, Long
             .setSkipHeaderRecord(true)
             .get();
     private final CSVFormat outputFormat = CSVFormat.DEFAULT.builder()
-            .setHeader("id", "nombre", "precio")
+            .setHeader("id", "nombre", "precio", "stock")
             .get();
 
     public ProductoCsvRepository(Path path) {
@@ -38,7 +38,7 @@ public class ProductoCsvRepository extends AbstractFileRepository<Producto, Long
     }
 
     @Override
-    protected List<Producto> readAll() throws IOException {
+    protected List<Producto> readAll() {
         try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
              CSVParser parser = inputFormat.parse(reader)) {
             for (CSVRecord row : parser) {
@@ -51,7 +51,7 @@ public class ProductoCsvRepository extends AbstractFileRepository<Producto, Long
     }
 
     @Override
-    protected void writeAll(List<Producto> productos) throws IOException {
+    protected void writeAll(List<Producto> productos) {
         try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
              CSVPrinter printer = new CSVPrinter(writer, outputFormat)) {
             for (Producto p : productos) printer.printRecord(p.id(), p.nombre(), p.precio());

@@ -8,21 +8,16 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ProductoJsonRepository
-        extends AbstractFileRepository<Producto, Long>
-        implements IProductoRepository {
+public class ProductoJsonRepository extends AbstractFileRepository<Producto, Long> implements IProductoRepository {
 
-    private final Path path;
     private final ObjectMapper mapper;
 
     public ProductoJsonRepository(Path path) {
-        this(path, new ObjectMapper());
+        super(path);
+        list = readAll();
+        mapper = new ObjectMapper();
     }
 
-    public ProductoJsonRepository(Path path, ObjectMapper mapper) {
-        this.path = path;
-        this.mapper = mapper;
-    }
 
     @Override
     protected Long getId(Producto producto) {
@@ -30,12 +25,16 @@ public class ProductoJsonRepository
     }
 
     @Override
-    protected List<Producto> readAll() throws IOException {
+    protected List<Producto> readAll() {
         throw new UnsupportedOperationException("Función no implementada");
     }
 
     @Override
-    protected void writeAll(List<Producto> productos) throws IOException {
-        throw new UnsupportedOperationException("Función no implementada");
+    protected void writeAll(List<Producto> productos) {
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), productos);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,7 +1,5 @@
 package es.codelearnacademy.filelab.repository;
 
-import es.codelearnacademy.filelab.model.Identifiable;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -52,15 +50,11 @@ public abstract class AbstractFileRepository<T extends Identifiable<ID>, ID> imp
         if(entity == null || entity.id() == null) {
             throw new IllegalArgumentException("El entity no puede ser nulo");
         }
-        try {
-            for(int i=0; i < list.size(); i++) {
-                if(list.get(i).equals(entity.id())) {
-                    list.set(i, entity); writeAll(list);
-                    return true;
-                }
+        for(int i=0; i < list.size(); i++) {
+            if(list.get(i).equals(entity.id())) {
+                list.set(i, entity); writeAll(list);
+                return true;
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
         return false;
     }
@@ -76,7 +70,6 @@ public abstract class AbstractFileRepository<T extends Identifiable<ID>, ID> imp
     }
 
     protected abstract ID getId(T entity);
-    protected abstract List<T> readAll() throws IOException;
-    protected abstract void writeAll(List<T> entities) throws IOException;
-
+    protected abstract List<T> readAll();
+    protected abstract void writeAll(List<T> entities);
 }

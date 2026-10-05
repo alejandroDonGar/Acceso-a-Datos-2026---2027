@@ -1,4 +1,3 @@
 package es.codelearnacademy.filelab.model;
 
-public record Producto(Long id, String nombre, Double precio, Integer stock)  implements Identifiable<Long>{
-}
+public record Producto(Long id, String nombre, Double precio, Integer stock) {}
