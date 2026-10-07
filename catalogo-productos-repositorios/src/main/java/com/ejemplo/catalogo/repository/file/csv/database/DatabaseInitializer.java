@@ -1,4 +1,4 @@
-package com.ejemplo.catalogo.database;
+package com.ejemplo.catalogo.repository.file.csv.database;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,12 +7,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public final class DatabaseInitializer {
+public abstract class DatabaseInitializer {
 
     String url;
     Path path;
 
-    private DatabaseInitializer(String url) {
+    public DatabaseInitializer(String url) {
         if(url == null || url.isBlank()) {
             url = "data/app.db";
         }
@@ -35,9 +35,9 @@ public final class DatabaseInitializer {
             )
             """;
 
-        try (Connection c = DriverManager.getConnection(url);
-             Statement st = c.createStatement()) {
-            st.execute(sql);
+        try (Connection connection = DriverManager.getConnection(url);
+             Statement sentencia = connection.createStatement()) {
+            sentencia.execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException("Error creando esquema", e);
         }

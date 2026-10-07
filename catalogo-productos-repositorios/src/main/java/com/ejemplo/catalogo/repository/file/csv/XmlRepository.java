@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-public class XmlRepository extends AbstractRepository {
+public class XmlRepository extends AbstractFileRepository {
     private final XmlMapper mapper;
     public XmlRepository(Path path) {
         super(path);
