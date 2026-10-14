@@ -64,10 +64,12 @@ public final class Consultas {
 
     /** Ejercicio: AVG(precio); para tabla vacía devolver 0.0. */
     public static double obtenerPrecioMedio() {
-        // TODO: abre la conexión con BaseDatos.conectar(),
-        // usa PreparedStatement y ResultSet dentro de try-with-resources.
-        // Captura SQLException aquí: no añadas throws SQLException.
-        // Ante error SQL: int=-1, double=NaN, boolean=false, lista vacía.
+        try (Connection connection = BaseDatos.conectar()
+            PreparedStatement sentencia = connection.prepareStatement("SELECT AVG(precio) FROM ")){
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         return Double.NaN;
     }
 
