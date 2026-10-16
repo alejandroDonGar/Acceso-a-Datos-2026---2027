@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * @author AlejandroDonGar
+ * ProductoDao
+ */
 public class ProductoDao extends ConexionBD {
 
     public ProductoDao(String url) {
@@ -34,40 +37,104 @@ public class ProductoDao extends ConexionBD {
     }
 
     public Optional<Producto> buscarPorId(int id) {
-        return null;
+    try (Connection connection = this.obtenerConexion();
+        PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE id=?")) {
+        sentencia.setInt(1, id);
+        ResultSet resultado = sentencia.executeQuery();
+        return resultado.next() ? Optional.of(productoMapper(resultado)) : Optional.empty();
+    } catch (Exception e) {
+        throw new AplicationException(e.getMessage(), e);
     }
+}
 
     public boolean insertar(Producto producto) {
-        return false;
+        try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("INSERT INTO productos VALUES (?,?,?)")) {
+            sentencia.setInt(1, producto.getId());
+            sentencia.setString(2, producto.getNombre());
+            sentencia.setDouble(3, producto.getPrecio());
+            return sentencia.executeUpdate() > 0;
+        } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+        }
     }
 
     public boolean actualizar(Producto producto) {
-        return false;
+        try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("UPDATE productos SET nombre=?, precio=? WHERE id=?")) {
+            sentencia.setDouble(1, producto.getPrecio());    
+            sentencia.setString(2, producto.getNombre());
+            sentencia.setInt(3, producto.getId());
+            return sentencia.executeUpdate() > 0;
+        } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+        }
     }
 
     public boolean eliminar(int id) {
-        return false;
+        try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("DELETE FROM productos WHERE id=?")) { 
+            sentencia.setInt(1, id);
+            return sentencia.executeUpdate() > 0;
+        } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+        }
     }
 
     public List<Producto> buscarPorNombre(String texto) {
-       return null;
+       List<Producto> listaDeNombres = new ArrayList<>();
+        try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE nombre=?")) {
+            sentencia.setString(1, texto);
+            ResultSet resultado = sentencia.executeQuery();
+            while(resultado.next()) {
+                listaDeNombres.add(productoMapper(resultado));
+            }
+        } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+        }
+        return listaDeNombres;
     }
 
     public List<Producto> buscarPorPrecio(double minimo, double maximo) {
-        return null;
+        List<Producto> listaDePrecios = new ArrayList<>();
+        try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE precio BETWEEN ? AND ?")) {
+            sentencia.setDouble(1, minimo);
+            sentencia.setDouble(2, maximo);
+            ResultSet resultado = sentencia.executeQuery();
+            while(resultado.next()) {
+                listaDePrecios.add(productoMapper(resultado));
+            }
+        } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+        }
+        return listaDePrecios;
     }
 
     public int contar() {
-       return 0;
+       try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("SELECT COUNT(*) FROM productos")) {
+            int totalDeProductos = sentencia.executeUpdate();
+            return totalDeProductos;
+       } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+       }
     }
 
     public double precioMedio() {
-        return 0;
+        try (Connection connection = this.obtenerConexion();
+            PreparedStatement sentencia = connection.prepareStatement("SELECT AVG(precio) FROM productos")) {
+            double mediaDePreciosDeProductos = sentencia.executeUpdate();
+            return mediaDePreciosDeProductos;
+       } catch (Exception e) {
+            throw new AplicationException(e.getMessage(), e.getCause());
+       }
     }
 
     private Producto productoMapper(ResultSet rs) {
         try {
-            return new Producto(rs.getInt(1), rs.getNString(2), rs.getDouble(3));
+            return new Producto(rs.getInt(1), rs.getString(2), rs.getDouble(3));
         } catch (SQLException e) {
             throw new AplicationException(e.getMessage(), e.getCause());
         }
