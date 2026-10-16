@@ -21,7 +21,7 @@ SELECT matricula, marca, modelo, anio FROM vehiculos WHERE marca = "Toyota" ORDE
 
 -- EJERCICIO 05
 -- Buscar productos cuyo nombre contenga Pro.
-SELECT ...;
+SELECT id, nombre, precio FROM productos WHERE nombre LIKE "%Pro%" LIMIT 8;
 
 -- EJERCICIO 06
 -- Mostrar productos con precio comprendido entre 20 y 50.
@@ -61,64 +61,105 @@ SELECT COUNT(*) FROM productos WHERE precio >= 50;
 
 -- EJERCICIO 15
 -- Contar vehículos de cada marca.
-SELECT COUNT(*) FROM vehiculos GROUP BY marca ORDER BY marca LIMIT 10;
+SELECT marca, COUNT(*) FROM vehiculos GROUP BY marca ORDER BY marca LIMIT 10;
 
 -- EJERCICIO 16
 -- Encontrar los años de fabricación con más vehículos.
-SELECT ...;
+SELECT anio, COUNT(*) AS cantidad FROM vehiculos GROUP BY anio ORDER BY cantidad DESC, anio DESC  LIMIT 10;
 
 -- EJERCICIO 17
 -- Calcular año más antiguo y reciente por marca.
-SELECT ...;
+SELECT marca, MIN(anio), MAX(anio) FROM vehiculos GROUP BY marca ORDER BY marca LIMIT 10;
 
 -- EJERCICIO 18
 -- Contar productos por tramos de precio.
-SELECT ...;
+SELECT 
+    CASE
+        WHEN precio < 25 THEN "Menos de 25"
+        WHEN precio < 75 THEN "25 a menos de 75"
+        ELSE "75 o más"
+    END AS tramo,
+    COUNT(*) AS cantidad
+FROM productos GROUP BY tramo ORDER BY MIN(precio);
 
 -- EJERCICIO 19
 -- Filtrar marcas con al menos cinco vehículos.
-SELECT ...;
+SELECT marca, COUNT(*) AS cantidad FROM vehiculos GROUP BY marca HAVING cantidad > 5 LIMIT 10;
 
 -- EJERCICIO 20
 -- Mostrar años en los que hay al menos tres vehículos.
-SELECT ...;
+SELECT anio, COUNT(*) AS cantidad FROM vehiculos GROUP BY anio HAVING cantidad > 3 ORDER BY cantidad DESC, anio DESC LIMIT 10;
 
 -- EJERCICIO 21
 -- Mostrar el precio medio por familia, usando la primera palabra del nombre.
-SELECT ...;
+SELECT
+    CASE
+        WHEN instr(nombre, ' ') > 0 THEN substr(nombre, 1, instr(nombre, ' ') - 1)
+        ELSE nombre
+    END AS familia,
+    COUNT(*) AS productos,
+    ROUND(AVG(precio), 2) AS media
+FROM productos GROUP BY familia ORDER BY productos DESC, familia ASC LIMIT 12;
 
 -- EJERCICIO 22
 -- Mostrar familias que tengan al menos cuatro productos y precio medio superior a 35.
-SELECT ...;
+WITH con_familia AS (
+    SELECT
+        CASE
+            WHEN instr(nombre, ' ') > 0 THEN substr(nombre, 1, instr(nombre, ' ') - 1)
+            ELSE nombre
+        END AS familia,
+        precio
+    FROM productos
+)
+SELECT familia, COUNT(*) AS productos, ROUND(AVG(precio), 2) AS media FROM con_familia GROUP BY familia HAVING COUNT(*) >= 4 AND AVG(precio) > 35 ORDER BY media DESC; 
 
 -- EJERCICIO 23
 -- Mostrar productos más caros que la media general.
-SELECT ...;
+SELECT id, nombre, precio FROM productos WHERE precio > (SELECT AVG(precio) FROM productos) ORDER BY precio DESC LIMIT 10;
 
 -- EJERCICIO 24
 -- Listar los modelos de los vehículos posteriores al año 2020 agrupados por marca.
-SELECT ...;
+SELECT marca, COUNT(*) AS vehiculos_recientes FROM vehiculos WHERE anio > 2020 GROUP BY marca ORDER BY vehiculos_recientes DESC, marca ASC  LIMIT 10;
 
 -- EJERCICIO 25
 -- Detectar los productos empatados con el precio máximo.
-SELECT ...;
+SELECT id, nombre, precio FROM productos WHERE precio = (SELECT MAX(precio) FROM productos);
 
 -- EJERCICIO 26
 -- Clasificar productos según el precio usando un ranking.
-SELECT ...;
+SELECT id, nombre, precio, RANK() OVER (ORDER BY precio DESC) AS puesto FROM productos ORDER BY puesto LIMIT 10;
 
 -- EJERCICIO 27
 -- Calcular un total acumulado de precios ordenados por identificador.
-SELECT ...;
+SELECT id, nombre, precio, ROUND(SUM(precio) OVER (ORDER BY id), 2) AS acumulado FROM productos ORDER BY id LIMIT 10;
 
 -- EJERCICIO 28
 -- Comparar cada producto con el precio medio de su familia.
-SELECT ...;
+WITH con_familia AS (
+    SELECT id, nombre, precio,
+        CASE
+            WHEN instr(nombre, ' ') > 0 THEN substr(nombre, 1, instr(nombre, ' ') - 1)
+            ELSE nombre
+        END AS familia
+    FROM productos
+)
+SELECT id, nombre, familia, precio, ROUND(AVG(precio) OVER (PARTITION BY familia), 2) AS media_familia FROM con_familia ORDER BY familia, precio DESC LIMIT 12;
 
 -- EJERCICIO 29
 -- Mostrar el vehículo más reciente de cada marca, incluyendo empates.
-SELECT ...;
+WITH ranking AS (
+    SELECT matricula, marca, modelo, anio,
+           RANK() OVER (PARTITION BY marca ORDER BY anio DESC) AS posicion
+    FROM vehiculos
+)
+SELECT matricula, marca, modelo, anio FROM ranking WHERE posicion = 1 ORDER BY marca;
 
 -- EJERCICIO 30
 -- Resumir por marca el total, año medio y antigüedad, conservando solo marcas con al menos tres vehículos.
-SELECT ...;
+SELECT marca,
+       COUNT(*) AS total,
+       ROUND(AVG(anio), 1) AS anio_medio,
+       MIN(anio) AS mas_antiguo,
+       MAX(anio) AS mas_reciente
+FROM vehiculos GROUP BY marca HAVING COUNT(*) >= 3 ORDER BY marca;
