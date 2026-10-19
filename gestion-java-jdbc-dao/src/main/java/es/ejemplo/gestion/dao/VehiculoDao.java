@@ -19,24 +19,24 @@ import java.util.Optional;
  * A diferencia de ProductoDao, no hereda de ConexionBD: la guarda en un atributo (composición),
  * que es como venía la plantilla. Las dos formas funcionan igual.
  */
-public class VehiculoDao extends ConexionBD{
+public class VehiculoDao extends AbstractDao<Vehiculo>{
 
     public VehiculoDao(String url) {
         super(url);
     }
 
-    public List<Vehiculo> listar() {
-        List<Vehiculo> lista = new ArrayList<>();
-        try (Connection connection = this.obtenerConexion();
-            PreparedStatement sentencia = connection.prepareStatement("SELECT matricula, marca, modelo, anio FROM Vehiculos ORDER BY matricula")) {
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                lista.add(vehiculoMapper(resultado));
-            }
-        } catch (Exception e) {
+    @Override
+    Vehiculo mapperToClass(ResultSet rs) {
+        try {
+            return new Vehiculo(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+        } catch (SQLException e) {
             throw new AplicationException(e.getMessage(), e);
         }
-        return lista;
+    }
+
+    public List<Vehiculo> listar() {
+        String query = "SELECT matricula, marca, modelo, anio FROM Vehiculos ORDER BY matricula";
+        return consultar(query);
     }
 
     public Optional<Vehiculo> buscarPorMatricula(String matricula) {
@@ -142,10 +142,6 @@ public class VehiculoDao extends ConexionBD{
     }
 
     private Vehiculo vehiculoMapper(ResultSet rs) {
-        try {
-            return new Vehiculo(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
-        } catch (SQLException e) {
-            throw new AplicationException(e.getMessage(), e);
-        }
+        return null;
     }
 }

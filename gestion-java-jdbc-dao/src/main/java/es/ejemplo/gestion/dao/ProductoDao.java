@@ -15,25 +15,26 @@ import java.util.Optional;
  * @author AlejandroDonGar
  * ProductoDao
  */
-public class ProductoDao extends ConexionBD {
+public class ProductoDao extends AbstractDao<Producto> {
 
     public ProductoDao(String url) {
         super(url);
     }
 
-
-    public List<Producto> listar() {
-        List<Producto> lista = new ArrayList<>();
-        try (Connection connection = this.obtenerConexion();
-            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos")) {
-            ResultSet resultado = sentencia.executeQuery();
-            while(resultado.next()) {
-                lista.add(productoMapper(resultado));
-            }
-        } catch (Exception e) {
+    @Override
+    Producto mapperToClass(ResultSet rs) {
+        try {
+            return new Producto(rs.getInt(1), rs.getString(2), rs.getDouble(3));
+        } catch (SQLException e) {
             throw new AplicationException(e.getMessage(), e.getCause());
         }
-        return lista;
+    }
+
+
+    public List<Producto> listar() {
+        String query = "SELECT id, nombre, precio FROM Productos";
+
+        return this.consultar(query);
     }
 
     public Optional<Producto> buscarPorId(int id) {
@@ -115,8 +116,8 @@ public class ProductoDao extends ConexionBD {
     public int contar() {
        try (Connection connection = this.obtenerConexion();
             PreparedStatement sentencia = connection.prepareStatement("SELECT COUNT(*) FROM productos")) {
-            int totalDeProductos = sentencia.executeUpdate();
-            return totalDeProductos;
+           ResultSet resultado = sentencia.executeQuery();
+           return resultado.next() ? resultado.getInt(1) : 0;
        } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e.getCause());
        }
@@ -125,18 +126,13 @@ public class ProductoDao extends ConexionBD {
     public double precioMedio() {
         try (Connection connection = this.obtenerConexion();
             PreparedStatement sentencia = connection.prepareStatement("SELECT AVG(precio) FROM productos")) {
-            double mediaDePreciosDeProductos = sentencia.executeUpdate();
-            return mediaDePreciosDeProductos;
+            return sentencia.executeUpdate();
        } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e.getCause());
        }
     }
 
     private Producto productoMapper(ResultSet rs) {
-        try {
-            return new Producto(rs.getInt(1), rs.getString(2), rs.getDouble(3));
-        } catch (SQLException e) {
-            throw new AplicationException(e.getMessage(), e.getCause());
-        }
+        return null;
     }
 }
