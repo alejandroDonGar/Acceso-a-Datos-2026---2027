@@ -2,9 +2,6 @@ package es.ejemplo.taller;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import es.ejemplo.taller.modelo.*;
-import java.sql.*;
-import java.math.BigDecimal;
-import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 public class ClienteDaoTest extends BaseTest {
     @Test @DisplayName("Insertar Ana devuelve un ID positivo") void caso01() throws Exception { assertTrue(cliente()>0); }
