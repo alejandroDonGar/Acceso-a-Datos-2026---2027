@@ -2,18 +2,49 @@ package es.ejemplo.clinica.dao;
 import es.ejemplo.clinica.modelo.Veterinario;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * @author AlejandroDonGar
+ * IVeterinarioDao
+ */
 public interface IVeterinarioDao  {
-    /** Lista todas las entidades. */
+    /**
+     * Funcion que crea una lista de veterinarios
+     * @return Devuelve una lista con todos los veterinarios
+     */
     List<Veterinario> listar();
-    /** Busca una entidad por su identificador. */
+
+    /**
+     * Funcion que busca un veterinario en la base de datos usando su id
+     * @param id Identificador del veterinario
+     * @return Devuelve el veterinario si existe o un Optional vacio si no
+     */
     Optional<Veterinario> buscarPorId(Integer id);
-    /** Inserta una entidad y devuelve su identificador generado. */
+
+    /**
+     * Funcion que inserta un veterinario en la base de datos
+     * @param entidad Veterinario a insertar
+     * @return Devuelve el id generado del veterinario insertado
+     */
     int insertar(Veterinario entidad);
-    /** Actualiza y devuelve el número de filas afectadas. */
+
+    /**
+     * Funcion que actualiza un veterinario
+     * @param entidad Veterinario a actualizar
+     * @return Devuelve 1 o 0 dependiendo de si se actualizo o no correctamente el veterinario
+     */
     int actualizar(Veterinario entidad);
-    /** Elimina por ID y devuelve el número de filas afectadas. */
+
+    /**
+     * Funcion que elimina un veterinario
+     * @param id Identificador del veterinario
+     * @return Devuelve 1 o 0 dependiendo de si se elimino o no correctamente el veterinario
+     */
     int eliminar(Integer id);
 
+    /**
+     * Funcion que busca los veterinarios de una especialidad, ordenados por tarifa
+     * @param especialidad Especialidad de los veterinarios (por ejemplo, Medicina general)
+     * @return Devuelve una lista con los veterinarios de esa especialidad, de menor a mayor tarifa
+     */
     List<Veterinario> buscarPorEspecialidad(String especialidad);
 }

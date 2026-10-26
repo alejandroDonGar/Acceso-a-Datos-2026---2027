@@ -28,7 +28,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return veterinariosEncontrados;
    }
@@ -53,7 +53,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
          }
          return Optional.empty();
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -65,7 +65,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
             entidad.getTarifaHora() == null) return 0;
 
       try (Connection c = this.abrir();
-            PreparedStatement st = c.prepareStatement("INSERT INTO veterinarios (nombre, especialidad, tarifa_hora) VALUES (?,?,?)")) {
+            PreparedStatement st = c.prepareStatement("INSERT INTO veterinarios (nombre, especialidad, tarifa_hora) VALUES (?,?,?) RETURNING id")) {
          st.setString(1, entidad.getNombre());
          st.setString(2, entidad.getEspecialidad());
          st.setBigDecimal(3, entidad.getTarifaHora());
@@ -75,7 +75,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return 0;
    }
@@ -96,7 +96,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
          st.setInt(4, entidad.getId());
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new IllegalArgumentException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -107,7 +107,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
          st.setInt(1, id);
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new NullPointerException();
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -119,7 +119,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
 
       try (Connection c = this.abrir();
             PreparedStatement st = c
-                  .prepareStatement("SELECT id, nombre, especialidad, tarifa_hora FROM veterinarios WHERE especialidad = ?")) {
+                  .prepareStatement("SELECT id, nombre, especialidad, tarifa_hora FROM veterinarios WHERE especialidad = ? ORDER BY tarifa_hora")) {
          st.setString(1, especialidad);
          try (ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
@@ -131,7 +131,7 @@ public final class VeterinarioDao extends AbstractDao implements IVeterinarioDao
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return veterinariosEncontradosPorEspecialidad;
    }

@@ -32,7 +32,7 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return clientesEncontrados;
    }
@@ -56,7 +56,7 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
          }
          return Optional.empty();
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -78,7 +78,7 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return 0;
    }
@@ -98,7 +98,7 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
          st.setInt(4, entidad.getId());
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new IllegalArgumentException(e.getMessage(), e.getCause());
+         throw new IllegalArgumentException(e.getMessage(), e);
       }
    }
 

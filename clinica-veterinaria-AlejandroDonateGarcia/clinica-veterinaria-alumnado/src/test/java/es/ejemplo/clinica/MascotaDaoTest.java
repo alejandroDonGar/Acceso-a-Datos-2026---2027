@@ -3,8 +3,6 @@ package es.ejemplo.clinica;
 import es.ejemplo.clinica.dao.*;
 import es.ejemplo.clinica.modelo.*;
 import org.junit.jupiter.api.Test;
-import java.math.BigDecimal;
-import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

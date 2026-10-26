@@ -32,7 +32,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return mascotasEncontradas;
    }
@@ -59,7 +59,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
          }
          return Optional.empty();
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -85,7 +85,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return 0;
    }
@@ -107,7 +107,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
          st.setInt(6, entidad.getId());
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -120,7 +120,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
          st.setInt(1, id);
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
@@ -145,7 +145,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return mascotasEncontradasPorCliente;
    }
@@ -170,7 +170,7 @@ public final class MascotaDao extends AbstractDao implements IMascotaDao {
             }
          }
       } catch (Exception e) {
-         throw new DaoException(e.getMessage(), e.getCause());
+         throw new DaoException(e.getMessage(), e);
       }
       return mascotasEncontradasPorEspecie;
    }
