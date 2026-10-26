@@ -5,8 +5,7 @@ import java.util.*;
 import java.math.BigDecimal;
 
 public final class TratamientoDao implements ITratamientoDao {
- public TratamientoDao(String url) { 
-
+ public TratamientoDao(String url) {
  }
 
  @Override

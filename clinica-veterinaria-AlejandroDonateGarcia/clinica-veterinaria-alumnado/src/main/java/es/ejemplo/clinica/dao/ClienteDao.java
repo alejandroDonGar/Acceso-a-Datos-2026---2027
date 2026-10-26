@@ -66,6 +66,7 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
          entidad.getNombre() == null || entidad.getNombre().isEmpty() ||
          entidad.getEmail() == null || entidad.getEmail().isEmpty() ||
          entidad.getTelefono() == null || entidad.getTelefono().isEmpty())  return 0;
+
       try (Connection c = this.abrir();
          PreparedStatement st = c.prepareStatement("INSERT INTO clientes (nombre, email, telefono) VALUES (?,?,?) RETURNING id")) {
          st.setString(1, entidad.getNombre());
@@ -88,6 +89,7 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
          entidad.getNombre() == null || entidad.getNombre().isEmpty() ||
          entidad.getEmail() == null || entidad.getEmail().isEmpty() ||
          entidad.getTelefono() == null || entidad.getTelefono().isEmpty()) return 0;
+
       try (Connection c = this.abrir();
          PreparedStatement st = c.prepareStatement("UPDATE clientes SET nombre = ?, email = ?, telefono = ? WHERE id = ?")) {
          st.setString(1, entidad.getNombre());
