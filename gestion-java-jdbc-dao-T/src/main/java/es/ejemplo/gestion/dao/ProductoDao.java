@@ -30,10 +30,16 @@ public class ProductoDao extends AbstractDao<Producto> {
         }
     }
 
-    // TODO: implementa cada método con PreparedStatement y try-with-resources.
-    // IMPORTANTE: buscarPorId y eliminar usan Integer; la clase base NO necesita ID.
     public Optional<Producto> buscarPorId(Integer id) {
-        // TODO: SELECT ... WHERE id = ?; ps.setInt(1, id); consultarUno(ps)
+        String sql = "SELECT id,nombre,precio FROM prodcutos WHERE id=?";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return consultarUno(ps); 
+            
+        } catch (Exception e) {
+            registrar("Seleccionar producto por su id", e);
+        }
         return Optional.empty();
     }
 
