@@ -31,9 +31,7 @@ public class ClienteEntity {
     public Integer getIdCliente() {
         return idCliente;
     }
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
-    }
+    // No hace falta setter del id porque se genera automaticamente.
 
     public String getNombre() {
         return nombre;
