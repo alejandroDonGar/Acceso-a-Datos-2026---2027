@@ -4,9 +4,11 @@ import es.ejemplo.taller.orm.config.OrmFactory;
 import es.ejemplo.taller.orm.entity.ClienteEntity;
 import es.ejemplo.taller.orm.mapper.ClienteMapper;
 import jakarta.persistence.EntityManagerFactory;
-
 import java.util.*;
-
+/**
+ * @author AlejandroDonGar
+ * Clase ClienteDao
+ */
 public class ClienteDao  {
 
     private final String url;
@@ -26,12 +28,16 @@ public class ClienteDao  {
         }
     }
     public Optional<Cliente> buscarPorId(Integer id) {
+        if(id == null) return Optional.empty();
+
         try (var em = managerFactory.createEntityManager()) {
             return Optional.ofNullable(em.find(ClienteEntity.class, id)).map(ClienteMapper::toDomain);
         }
     }
 
     public ClienteEntity buscarPorEmail(String email) {
+        if(email == null) return null;
+
         try (var em = managerFactory.createEntityManager()) {
             return em.createQuery("select c from ClienteEntity c where c.email = :email",
                                     ClienteEntity.class).setParameter("email", email).getSingleResult();
@@ -47,7 +53,7 @@ public class ClienteDao  {
                 tx.begin();
                 ClienteEntity entidad = ClienteMapper.toEntity(cliente);
                 em.persist(entidad);
-                em.flush();
+                em.flush(); // Sirve cuando hay ids autogenerados.
                 cliente.setIdCliente(entidad.getIdCliente());
                 tx.commit();
                 return cliente.getIdCliente();

@@ -1,7 +1,11 @@
 package es.ejemplo.taller.orm.entity;
-
 import jakarta.persistence.*;
-
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * @author AlejandroDonGar
+ * Clase ClienteEntity
+ */
 @Entity
 @Table(name = "clientes")
 public class ClienteEntity {
@@ -18,6 +22,10 @@ public class ClienteEntity {
 
     @Column(name = "telefono")
     private String telefono;
+
+    //En la clase de donde proviene el id, tenemos que hacer estas lineas por cada clase que dependa de la principla
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    private List<VehiculoEntity> vehiculos = new ArrayList<>();
 
     protected ClienteEntity() {} // Necesario para JPA
 
@@ -52,5 +60,9 @@ public class ClienteEntity {
     }
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public List<VehiculoEntity> getVehiculos() {
+        return vehiculos;
     }
 }
