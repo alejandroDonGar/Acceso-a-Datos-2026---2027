@@ -1,6 +1,7 @@
 package es.ejemplo.biblioteca.dao;
 import es.ejemplo.biblioteca.modelo.Socio;
 
+import es.ejemplo.biblioteca.orm.entity.PrestamoEntity;
 import es.ejemplo.biblioteca.orm.mapper.SocioMapper;
 import es.ejemplo.biblioteca.orm.entity.SocioEntity;
 import es.ejemplo.biblioteca.orm.config.OrmFactory;
@@ -108,6 +109,12 @@ public class SocioDao implements AutoCloseable {
                 SocioEntity a = em.find(SocioEntity.class, id);
                 if (a == null) {
                     tx.rollback();
+                    return 0;
+                }
+                PrestamoEntity presEnt = em.createQuery("select p from PrestamoEntity p where p.idSocio = :id", PrestamoEntity.class)
+                        .setParameter("id", id)
+                        .getSingleResult();
+                if(presEnt!=null) {
                     return 0;
                 }
                 em.remove(a);

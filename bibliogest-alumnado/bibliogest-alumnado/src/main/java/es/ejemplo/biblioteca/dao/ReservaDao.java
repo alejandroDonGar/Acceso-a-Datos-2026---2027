@@ -124,23 +124,55 @@ public class ReservaDao implements AutoCloseable {
     private boolean validar(Reserva dato) {return dato != null && dato.getIdSocio()!=null && dato.getIdLibro()!=null && dato.getFechaReserva()!=null && dato.getEstado()!=null && (dato.getEstado().equals("PENDIENTE") || dato.getEstado().equals("ATENDIDA") || dato.getEstado().equals("CANCELADA"));}
     
     public List<Reserva> listarPendientes() {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select r from ReservaEntity r where estado = 'PENDIENTE'", ReservaEntity.class)
+                    .getResultStream()
+                    .map(ReservaMapper::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            registrar("listarPendientes", e);
+            return List.of();
+        }
     }
     
     public List<Reserva> buscarPorSocio(int idSocio) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        if(idSocio<1)  return List.of();
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select r from ReservaEntity r where idSocio = :idSocioAsociado", ReservaEntity.class)
+                    .setParameter("idSocioAsociado", idSocio)
+                    .getResultStream()
+                    .map(ReservaMapper::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            registrar("buscarPorSocio", e);
+            return List.of();
+        }
     }
     
     public List<Reserva> listarPorLibro(int idLibro) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        if(idLibro<1)  return List.of();
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select r from ReservaEntity r where idLibro = :idLibroReservados", ReservaEntity.class)
+                    .setParameter("idLibroReservados", idLibro)
+                    .getResultStream()
+                    .map(ReservaMapper::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            registrar("listarPorLibro", e);
+            return List.of();
+        }
     }
     
     public long contarReservasPendientes() {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return 0;
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select count(r) from ReservaEntity r where estado = 'PENDIENTE'", Long.class)
+                    .getSingleResult();
+        } catch (Exception e) {
+            registrar("buscarPorSocio", e);
+            return 0;
+        }
     }
     
     public List<Object[]> reservasConDetalles() {
