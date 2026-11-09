@@ -19,7 +19,11 @@ public class LibroDao implements AutoCloseable {
     
     public LibroDao(EntityManagerFactory factory) {managerFactory=factory;ownFactory=false;}
     private void registrar(String metodo,Exception ex) {LOG.log(Level.WARNING,metodo+" no se pudo completar: "+ex.getMessage());}
-    
+    /**
+     * Busca todos los libros de la bbdd
+     *
+     * @return Devuelve una lista con todos los autores encontrados
+     */
     public List<Libro> listar() {
         try (var em = managerFactory.createEntityManager()) {
             return em.createQuery("select l from LibroEntity l order by l.titulo", LibroEntity.class)
@@ -31,7 +35,12 @@ public class LibroDao implements AutoCloseable {
             return List.of();
         }
     }
-
+    /**
+     * Busca un libro por su identificador
+     *
+     * @param id Identificador con el que buscar al libro
+     * @return Devuelve el libro encontrado o un Optional.empty()
+     */
     public Optional<Libro> buscarPorId(Integer id) {
         if(id==null) return Optional.empty();
 
@@ -42,7 +51,12 @@ public class LibroDao implements AutoCloseable {
             return Optional.empty();
         }
     }
-
+    /**
+     * Crea un nuevo libro en la bbdd
+     *
+     * @param dato Datos del autor a insertar en la bbdd
+     * @return Devuelve el id del libro
+     */
     public int insertar(Libro dato) {
         if (!validar(dato)) return 0;
 
@@ -66,7 +80,12 @@ public class LibroDao implements AutoCloseable {
             return 0;
         }
     }
-
+    /**
+     * Actualiza la informacion de un libro
+     *
+     * @param dato Informacion a actualizar del libro
+     * @return Devuelve 1 o 0 dependiendo de si se ha actualizado el libro
+     */
     public int actualizar(Libro dato) {
         if (!validar(dato) || dato.getIdLibro() == null) return 0;
 
@@ -98,7 +117,12 @@ public class LibroDao implements AutoCloseable {
             return 0;
         }
     }
-
+    /**
+     * Borra un autor de la bbdd
+     *
+     * @param id Identificador del autor para encontrado en la bbdd
+     * @return Devuelve 1 o 0 dependiendo de si se ha borrado el autor
+     */
     public int eliminar(Integer id) {
         if(id==null||id<1) return 0;
 
@@ -156,8 +180,18 @@ public class LibroDao implements AutoCloseable {
     }
     
     public List<Libro> buscarPorTitulo(String texto) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        if(texto==null || texto.isBlank()) return List.of();
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select l from LibroEntity l where titulo = :texto", LibroEntity.class)
+                    .setParameter("texto", texto)
+                    .getResultStream()
+                    .map(LibroMapper::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            registrar("buscarPorGenero", e);
+            return List.of();
+        }
     }
     
     public List<Libro> listarDisponibles() {
@@ -215,7 +249,5 @@ public class LibroDao implements AutoCloseable {
         return List.of();
     }
 
-
-    
     @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
 }
