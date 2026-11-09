@@ -11,18 +11,30 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 /**
  * @author AlejandroDonGar
- * AutorDao
+ * DAO de acceso a la tabla autores mediante JPA (EntityManager y JPQL).
+ * Los errores de persistencia se registran en el log y nunca se lanzan:
+ * se devuelve 0, Optional.empty() o una lista vacia segun el metodo.
  */
 public class AutorDao implements AutoCloseable {
     private static final Logger LOG=Logger.getLogger(AutorDao.class.getName());
     private final EntityManagerFactory managerFactory;
     private final boolean ownFactory;
     
+    /**
+     * Crea el DAO con su propia EntityManagerFactory, que se cierra en close()
+     *
+     * @param url URL JDBC de la base de datos SQLite
+     */
     public AutorDao(String url) {
         managerFactory=OrmFactory.crear(url);
         ownFactory=true;
     }
     
+    /**
+     * Crea el DAO usando una EntityManagerFactory compartida (no la cierra en close())
+     *
+     * @param factory Factoria de EntityManager ya creada
+     */
     public AutorDao(EntityManagerFactory factory) {
         managerFactory=factory;ownFactory=false;
     }
@@ -180,9 +192,9 @@ public class AutorDao implements AutoCloseable {
      */
     public long contarLibrosPorAutor(int idAutor) {
         try (var em = managerFactory.createEntityManager()){
-            long totalLibros = em.createQuery("select count(l) from LibroEntity l where idAutor = :idAutor", Long.class)
+            long totalLibros = em.createQuery("select count(l) from LibroEntity l where l.idAutor = :idAutor", Long.class)
             .setParameter("idAutor", idAutor)
-            .getFirstResult();
+            .getSingleResult();
             return totalLibros;
         } catch (Exception e) {
             registrar("contarLibrosPorAutor", e);
@@ -220,5 +232,8 @@ public class AutorDao implements AutoCloseable {
         }
     }
 
+    /**
+     * Cierra la EntityManagerFactory solo si la ha creado este DAO
+     */
     @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
 }
