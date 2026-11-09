@@ -125,13 +125,29 @@ public class SocioDao implements AutoCloseable {
     private boolean validar(Socio dato) {return dato != null && dato.getNombre()!=null && !dato.getNombre().isBlank() && dato.getEmail()!=null && !dato.getEmail().isBlank() && dato.getFechaAlta()!=null && dato.getActivo()!=null;}
     
     public List<Socio> listarActivos() {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select s from SocioEntity s where s.activo = true order by s.fechaAlta desc", SocioEntity.class)
+                    .getResultStream()
+                    .map(SocioMapper::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            registrar("listarActivos", e);
+            return List.of();
+        }
     }
     
     public Optional<Socio> buscarPorEmail(String email) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return Optional.empty();
+        if(email==null || email.isEmpty()) return Optional.empty();
+
+        try (var em = managerFactory.createEntityManager()){
+            return Optional.ofNullable(em.createQuery("select s from SocioEntity s where email = :emailBuscar", SocioEntity.class)
+                    .setParameter("emailBuscar", email)
+                    .getSingleResult())
+                    .map(SocioMapper::toDomain);
+        } catch (Exception e) {
+            registrar("buscarPorEmail", e);
+            return Optional.empty();
+        }
     }
     
     public List<Socio> listarConPrestamosVencidos(String fecha) {

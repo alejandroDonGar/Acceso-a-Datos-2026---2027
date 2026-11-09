@@ -140,8 +140,16 @@ public class PrestamoDao implements AutoCloseable {
     }
     
     public long contarPrestamosPorLibro(int idLibro) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return 0;
+        if(idLibro<1) return 0;
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select count(p) from prestamos p where p.idLibro = :idLibro",Long.class)
+                    .setParameter("idLibro",idLibro)
+                    .getSingleResult();
+        } catch (Exception e) {
+            registrar("contarPrestamosPorLibro", e);
+            return 0;
+        }
     }
     
     public List<Object[]> prestamosConSocioYLibro() {

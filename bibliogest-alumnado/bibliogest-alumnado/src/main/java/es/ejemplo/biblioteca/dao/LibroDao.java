@@ -183,13 +183,13 @@ public class LibroDao implements AutoCloseable {
         if(texto==null || texto.isBlank()) return List.of();
 
         try (var em = managerFactory.createEntityManager()) {
-            return em.createQuery("select l from LibroEntity l where titulo = :texto", LibroEntity.class)
-                    .setParameter("texto", texto)
+            return em.createQuery("select l from LibroEntity l where titulo like concat('%', :textoLike, '%')", LibroEntity.class)
+                    .setParameter("textoLike", texto)
                     .getResultStream()
                     .map(LibroMapper::toDomain)
                     .toList();
         } catch (Exception e) {
-            registrar("buscarPorGenero", e);
+            registrar("buscarPorTitulo", e);
             return List.of();
         }
     }
@@ -200,13 +200,30 @@ public class LibroDao implements AutoCloseable {
     }
     
     public List<Libro> librosDesdeAnio(int anio, String genero) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        if(genero==null || genero.isBlank()) return List.of();
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select l from LibroEntity l where anioPublicacion >= :anio and genero = :genero", LibroEntity.class)
+                    .setParameter("anio", anio)
+                    .setParameter("genero", genero)
+                    .getResultStream()
+                    .map(LibroMapper::toDomain)
+                    .toList();
+        } catch (Exception e) {
+            registrar("librosDesdeAnio", e);
+            return List.of();
+        }
     }
     
     public List<String> generos() {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select distinct(l.genero) from LibroEntity l", String.class)
+                    .getResultStream()
+                    .toList();
+        } catch (Exception e) {
+            registrar("generos", e);
+            return List.of();
+        }
     }
     
     public List<Libro> nuncaPrestados() {
@@ -230,8 +247,14 @@ public class LibroDao implements AutoCloseable {
     }
     
     public List<Object[]> contarPorGenero() {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select count(distinct(l.genero)) from LibroEntity l group by l.genero", Object[].class)
+                    .getResultStream()
+                    .toList();
+        } catch (Exception e) {
+            registrar("generos", e);
+            return List.of();
+        }
     }
     
     public List<Object[]> prestamosPorGeneroMinimo(long minimo) {
