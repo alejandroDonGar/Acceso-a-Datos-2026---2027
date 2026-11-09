@@ -126,13 +126,33 @@ public class LibroDao implements AutoCloseable {
     private boolean validar(Libro dato) {return dato != null && dato.getTitulo()!=null && !dato.getTitulo().isBlank() && dato.getIsbn()!=null && !dato.getIsbn().isBlank() && dato.getGenero()!=null && dato.getIdAutor()!=null && dato.getEjemplares()!=null && dato.getEjemplares()>=0;}
     
     public List<Libro> buscarPorGenero(String genero) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        if(genero==null || genero.isBlank()) return List.of();
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select l from LibroEntity l where genero = :genero", LibroEntity.class)
+            .setParameter("genero", genero)
+            .getResultStream()
+            .map(LibroMapper::toDomain)
+            .toList();
+        } catch (Exception e) {
+            registrar("buscarPorGenero", e);
+            return List.of();
+        }
     }
     
     public List<Libro> buscarPorAutor(int idAutor) {
-        // TODO: implementar con EntityManager, JPQL y rollback cuando proceda.
-        return List.of();
+        if(idAutor<0) return List.of();
+
+        try (var em = managerFactory.createEntityManager()) {
+            return em.createQuery("select l from LibroEntity l where idActor = :idAutor", LibroEntity.class)
+            .setParameter("idAutor", idAutor)
+            .getResultStream()
+            .map(LibroMapper::toDomain)
+            .toList();
+        } catch (Exception e) {
+            registrar("buscarPorGenero", e);
+            return List.of();
+        }
     }
     
     public List<Libro> buscarPorTitulo(String texto) {
