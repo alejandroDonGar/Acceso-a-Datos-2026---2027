@@ -5,7 +5,7 @@ import es.ejemplo.cinefest.orm.entity.SalaEntity;
 
 public final class SalaMapper {
     private SalaMapper() {}
-    public static Sala desdeEntidad(SalaEntity source) {
+    public static Sala desdeEntidad(SalaEntity source) { // Equivalente a -> toDomain
         if (source == null) return null;
         Sala result = new Sala();
         result.setIdSala(source.getIdSala());
@@ -14,7 +14,7 @@ public final class SalaMapper {
         result.setIdSede(source.getIdSede());
         return result;
     }
-    public static SalaEntity aEntidad(Sala source) {
+    public static SalaEntity aEntidad(Sala source) { // Equivalente a -> toEntity
         if (source == null) return null;
         SalaEntity result = new SalaEntity();
         result.setIdSala(source.getIdSala());

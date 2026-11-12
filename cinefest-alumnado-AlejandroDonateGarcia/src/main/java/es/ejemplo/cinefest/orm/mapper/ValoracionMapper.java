@@ -5,7 +5,7 @@ import es.ejemplo.cinefest.orm.entity.ValoracionEntity;
 
 public final class ValoracionMapper {
     private ValoracionMapper() {}
-    public static Valoracion desdeEntidad(ValoracionEntity source) {
+    public static Valoracion desdeEntidad(ValoracionEntity source) { // Equivalente a -> toDomain
         if (source == null) return null;
         Valoracion result = new Valoracion();
         result.setIdValoracion(source.getIdValoracion());
@@ -16,7 +16,7 @@ public final class ValoracionMapper {
         result.setFecha(source.getFecha());
         return result;
     }
-    public static ValoracionEntity aEntidad(Valoracion source) {
+    public static ValoracionEntity aEntidad(Valoracion source) { // Equivalente a -> toEntity
         if (source == null) return null;
         ValoracionEntity result = new ValoracionEntity();
         result.setIdValoracion(source.getIdValoracion());

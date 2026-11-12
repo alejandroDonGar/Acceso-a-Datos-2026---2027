@@ -5,7 +5,7 @@ import es.ejemplo.cinefest.orm.entity.SesionEntity;
 
 public final class SesionMapper {
     private SesionMapper() {}
-    public static Sesion desdeEntidad(SesionEntity source) {
+    public static Sesion desdeEntidad(SesionEntity source) { // Equivalente a -> toDomain
         if (source == null) return null;
         Sesion result = new Sesion();
         result.setIdSesion(source.getIdSesion());
@@ -17,7 +17,7 @@ public final class SesionMapper {
         result.setEstado(source.getEstado());
         return result;
     }
-    public static SesionEntity aEntidad(Sesion source) {
+    public static SesionEntity aEntidad(Sesion source) { // Equivalente a -> toEntity
         if (source == null) return null;
         SesionEntity result = new SesionEntity();
         result.setIdSesion(source.getIdSesion());

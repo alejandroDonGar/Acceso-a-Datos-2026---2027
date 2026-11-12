@@ -5,7 +5,7 @@ import es.ejemplo.cinefest.orm.entity.EntradaEntity;
 
 public final class EntradaMapper {
     private EntradaMapper() {}
-    public static Entrada desdeEntidad(EntradaEntity source) {
+    public static Entrada desdeEntidad(EntradaEntity source) { // Equivalente a -> toDomain
         if (source == null) return null;
         Entrada result = new Entrada();
         result.setIdEntrada(source.getIdEntrada());
@@ -15,7 +15,7 @@ public final class EntradaMapper {
         result.setEstado(source.getEstado());
         return result;
     }
-    public static EntradaEntity aEntidad(Entrada source) {
+    public static EntradaEntity aEntidad(Entrada source) { // Equivalente a -> toEntity
         if (source == null) return null;
         EntradaEntity result = new EntradaEntity();
         result.setIdEntrada(source.getIdEntrada());

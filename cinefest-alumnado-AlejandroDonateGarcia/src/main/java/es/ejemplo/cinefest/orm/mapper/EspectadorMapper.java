@@ -5,7 +5,7 @@ import es.ejemplo.cinefest.orm.entity.EspectadorEntity;
 
 public final class EspectadorMapper {
     private EspectadorMapper() {}
-    public static Espectador desdeEntidad(EspectadorEntity source) {
+    public static Espectador desdeEntidad(EspectadorEntity source) { // Equivalente a -> toDomain
         if (source == null) return null;
         Espectador result = new Espectador();
         result.setIdEspectador(source.getIdEspectador());
@@ -15,7 +15,7 @@ public final class EspectadorMapper {
         result.setActivo(source.getActivo());
         return result;
     }
-    public static EspectadorEntity aEntidad(Espectador source) {
+    public static EspectadorEntity aEntidad(Espectador source) { // Equivalente a -> toEntity
         if (source == null) return null;
         EspectadorEntity result = new EspectadorEntity();
         result.setIdEspectador(source.getIdEspectador());

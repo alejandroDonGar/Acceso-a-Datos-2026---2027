@@ -5,7 +5,7 @@ import es.ejemplo.cinefest.orm.entity.SedeEntity;
 
 public final class SedeMapper {
     private SedeMapper() {}
-    public static Sede desdeEntidad(SedeEntity source) {
+    public static Sede desdeEntidad(SedeEntity source) { // Equivalente a -> toDomain
         if (source == null) return null;
         Sede result = new Sede();
         result.setIdSede(source.getIdSede());
@@ -13,7 +13,7 @@ public final class SedeMapper {
         result.setMunicipio(source.getMunicipio());
         return result;
     }
-    public static SedeEntity aEntidad(Sede source) {
+    public static SedeEntity aEntidad(Sede source) { // Equivalente a -> toEntity
         if (source == null) return null;
         SedeEntity result = new SedeEntity();
         result.setIdSede(source.getIdSede());
