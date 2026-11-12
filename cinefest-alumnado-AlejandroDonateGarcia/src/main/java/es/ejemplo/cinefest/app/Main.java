@@ -7,13 +7,30 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        try (var dao = new SesionDao("jdbc:sqlite:datos/cinefest.sqlite3?foreign_keys=on")) {
+        try (var dao = new EntradaDao("jdbc:sqlite:datos/cinefest.sqlite3?foreign_keys=on")) {
+            System.out.println(
+                dao.buscarPorId(2)
+                .map(e -> e.getIdEntrada() + " | "
+                + e.getIdSesion() + " | "
+                + e.getIdEspectador() + " | "
+                + e.getFechaCompra() + " | "
+                + e.getEstado())
+                .orElse("No existe"));
 
+            
             // List<Object[]> -> un for y Arrays.toString para ver cada fila
-            for (Object[] fila : dao.informeDiario()) {
-                System.out.println(Arrays.toString(fila));
-            }
+            // for (Object[] fila : dao.informeDiario()) {
+            //     System.out.println(Arrays.toString(fila));
+            // }
 
+            // for (Entrada e : dao.listar()) {
+            //      System.out.println(
+            //        e.getIdEntrada() + " | " 
+            //      + e.getIdSesion() + " | " 
+            //      + e.getIdEspectador() + " | "
+            //      + e.getFechaCompra() + " | "
+            //      + e.getEstado());
+            // }
             // Con parametro -> el valor de "Parametros" del README va dentro del parentesis del metodo
             // for (Object[] fila : dao.sesionesPorFecha("2026-11-13")) {
             //     System.out.println(Arrays.toString(fila));
