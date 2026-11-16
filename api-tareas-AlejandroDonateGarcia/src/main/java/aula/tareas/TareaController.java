@@ -4,10 +4,11 @@ import java.net.URI;
 import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController // Soy servicio red controlado
 @RequestMapping("/api/tareas")
 class TareaController {
     private final TareaService servicio;
@@ -28,9 +29,11 @@ class TareaController {
 
     @PostMapping
     ResponseEntity<Tarea> crear(@Valid @RequestBody NuevaTarea peticion) {
+        //@Valid @RequestBody -> Importante, ¿Por que?
         Tarea tarea = servicio.crear(peticion.titulo());
         return ResponseEntity.created(URI.create("/api/tareas/" + tarea.id())).body(tarea);
     }
 
     public record NuevaTarea(@NotBlank String titulo) {}
 }
+

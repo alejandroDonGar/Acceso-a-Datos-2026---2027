@@ -13,11 +13,9 @@ class TareaService {
     List<Tarea> listar() {
         return List.copyOf(tareas.values());
     }
-
     Tarea buscar(long id) {
         return tareas.get(id);
     }
-
     Tarea crear(String titulo) {
         long id = secuencia.incrementAndGet();
         var tarea = new Tarea(id, titulo.strip());
@@ -25,3 +23,9 @@ class TareaService {
         return tarea;
     }
 }
+
+/*--------------------*/
+// GET -> Obtener info
+// POST -> Crear info
+// PUT -> Actualizar info
+// DELETE -> Borrar info
