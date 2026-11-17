@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import aula.tareas.modelo.Tarea;
+import aula.tareas.repository.ITareaRepository;
+import aula.tareas.repository.TareaRepository;
 import org.springframework.stereotype.Service;
 /**
  * @author AlejandroDonGar
@@ -15,18 +17,29 @@ import org.springframework.stereotype.Service;
 public class TareaService {
     private final AtomicLong secuencia = new AtomicLong();
     private final ConcurrentSkipListMap<Long, Tarea> tareas = new ConcurrentSkipListMap<>();
+    private final ITareaRepository tareaRepository;
+
+    // Como se hacia antes:
+    // public TareaService(ITareaRepository tareaRepository) {
+    //     this.tareaRepository = new ITareaRepository();
+    // }
+
+    // Como se hace en Spring
+    public TareaService(ITareaRepository tareaRepository) {
+        this.tareaRepository = tareaRepository;
+    }
 
     public List<Tarea> listar() {
-        return List.copyOf(tareas.values()); // Genera lista nueva con copyOf
+        return tareaRepository.findAll();
     }
     public Tarea buscar(long id) {
-        return tareas.get(id);
+        return tareaRepository.findById(id);
     }
     public Tarea crear(String titulo) {
-        long id = secuencia.incrementAndGet();
-        var tarea = new Tarea(id, titulo.strip());
-        tareas.put(id, tarea);
-        return tarea;
+        if(titulo==null || titulo.isEmpty()) {
+            return null;
+        }
+        return tareaRepository.create(titulo);
     }
 }
 

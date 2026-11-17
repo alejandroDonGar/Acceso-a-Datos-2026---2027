@@ -1,9 +1,12 @@
 package aula.tareas.repository;
 
 import aula.tareas.modelo.Tarea;
-
 import java.util.List;
-
+/**
+ * @author AlejandroDonGar
+ *
+ * Interfaz ITareaRepository
+ */
 public interface ITareaRepository {
     public List<Tarea> findAll();
     public Tarea findById(long identificador);
