@@ -1,4 +1,8 @@
 package es.ejemplo.taller.modelo;
+/**
+ * Cliente del taller (id autogenerado, nombre, email unico y telefono opcional)
+ * @author AlejandroDonGar
+ */
 public class Cliente {
     private Integer idCliente;
     private String nombre;
