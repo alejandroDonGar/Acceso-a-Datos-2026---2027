@@ -1,173 +1,63 @@
 package es.ejemplo.taller.dao;
 
 import es.ejemplo.taller.modelo.Reparacion;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
+
 /**
+ * DAO de la tabla reparaciones (id autogenerado) con las busquedas por vehiculo,
+ * por mecanico y las reparaciones pendientes
  * @author AlejandroDonGar
- * ReparacionDao
  */
-public class ReparacionDao extends AbstractDao<Reparacion> {
+public class ReparacionDao extends AbstractDao<Reparacion, Integer> {
+    private static final Set<String> ESTADOS = Set.of("PENDIENTE", "EN_PROCESO", "FINALIZADA");
 
     public ReparacionDao(String url) {
-        super(url);
+        super(url, "reparaciones", "id_reparacion",
+                "id_reparacion, matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado");
     }
 
-    public List<Reparacion> listar() {
-        List<Reparacion> reparacionesEncontradas = new ArrayList<>();
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("SELECT id_reparacion, matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado FROM reparaciones")) {
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                reparacionesEncontradas.add(new Reparacion(
-                        resultado.getInt("id_reparacion"),
-                        resultado.getString("matricula"),
-                        resultado.getInt("id_mecanico"),
-                        resultado.getString("descripcion"),
-                        resultado.getString("fecha"),
-                        resultado.getBigDecimal("horas_trabajo"),
-                        resultado.getString("estado")));
-            }
-            return reparacionesEncontradas;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Optional<Reparacion> buscarPorId(Integer id) {
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("SELECT id_reparacion, matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado FROM reparaciones WHERE id_reparacion=?")) {
-            sentencia.setInt(1, id);
-            ResultSet resultado = sentencia.executeQuery();
-            if (resultado.next()) {
-                return Optional.of(new Reparacion(
-                        resultado.getInt("id_reparacion"),
-                        resultado.getString("matricula"),
-                        resultado.getInt("id_mecanico"),
-                        resultado.getString("descripcion"),
-                        resultado.getString("fecha"),
-                        resultado.getBigDecimal("horas_trabajo"),
-                        resultado.getString("estado")));
-            }
-            return Optional.empty();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    protected Reparacion mapear(ResultSet rs) throws SQLException {
+        return new Reparacion(rs.getInt("id_reparacion"), rs.getString("matricula"), rs.getInt("id_mecanico"),
+                rs.getString("descripcion"), rs.getString("fecha"), rs.getBigDecimal("horas_trabajo"),
+                rs.getString("estado"));
     }
 
     public int insertar(Reparacion dato) {
-        if (dato == null
-                || dato.getMatricula() == null || dato.getMatricula().isEmpty()
-                || dato.getIdMecanico() == null
-                || dato.getDescripcion() == null || dato.getDescripcion().isEmpty()
-                || dato.getFecha() == null || dato.getFecha().isEmpty()
-                || dato.getHorasTrabajo() == null
-                || dato.getEstado() == null) {
-            return 0;
-        }
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("INSERT INTO reparaciones (matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado) VALUES (?,?,?,?,?,?)")) {
-            sentencia.setString(1, dato.getMatricula());
-            sentencia.setInt(2, dato.getIdMecanico());
-            sentencia.setString(3, dato.getDescripcion());
-            sentencia.setString(4, dato.getFecha());
-            sentencia.setBigDecimal(5, dato.getHorasTrabajo());
-            sentencia.setString(6, dato.getEstado());
-            return sentencia.executeUpdate();
-        } catch (SQLException e) {
-            return 0;
-        }
+        if (!esValido(dato)) return 0;
+        return insertarDevolviendoId("INSERT INTO reparaciones (matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado) VALUES (?,?,?,?,?,?)",
+                dato.getMatricula(), dato.getIdMecanico(), dato.getDescripcion(), dato.getFecha(),
+                dato.getHorasTrabajo(), dato.getEstado());
     }
 
     public int actualizar(Reparacion dato) {
-        if (dato == null || dato.getIdReparacion() == null) return 0;
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("UPDATE reparaciones SET matricula=?, id_mecanico=?, descripcion=?, fecha=?, horas_trabajo=?, estado=? WHERE id_reparacion=?")) {
-            sentencia.setString(1, dato.getMatricula());
-            sentencia.setInt(2, dato.getIdMecanico());
-            sentencia.setString(3, dato.getDescripcion());
-            sentencia.setString(4, dato.getFecha());
-            sentencia.setBigDecimal(5, dato.getHorasTrabajo());
-            sentencia.setString(6, dato.getEstado());
-            sentencia.setInt(7, dato.getIdReparacion());
-            return sentencia.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public int eliminar(Integer id) {
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("DELETE FROM reparaciones WHERE id_reparacion=?")) {
-            sentencia.setInt(1, id);
-            return sentencia.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        if (!esValido(dato) || dato.getIdReparacion() == null) return 0;
+        return ejecutar("UPDATE reparaciones SET matricula=?, id_mecanico=?, descripcion=?, fecha=?, horas_trabajo=?, estado=? WHERE id_reparacion=?",
+                dato.getMatricula(), dato.getIdMecanico(), dato.getDescripcion(), dato.getFecha(),
+                dato.getHorasTrabajo(), dato.getEstado(), dato.getIdReparacion());
     }
 
     public List<Reparacion> buscarPorVehiculo(String valor) {
-        List<Reparacion> reparacionesEncontradas = new ArrayList<>();
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("SELECT id_reparacion, matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado FROM reparaciones WHERE matricula=?")) {
-            sentencia.setString(1, valor);
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                reparacionesEncontradas.add(new Reparacion(
-                        resultado.getInt("id_reparacion"),
-                        resultado.getString("matricula"),
-                        resultado.getInt("id_mecanico"),
-                        resultado.getString("descripcion"),
-                        resultado.getString("fecha"),
-                        resultado.getBigDecimal("horas_trabajo"),
-                        resultado.getString("estado")));
-            }
-            return reparacionesEncontradas;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        if (!texto(valor)) return new ArrayList<>();
+        return consultarLista(select + " WHERE matricula = ? ORDER BY id_reparacion", valor);
     }
 
     public List<Reparacion> buscarPorMecanico(Integer valor) {
-        List<Reparacion> reparacionesEncontradas = new ArrayList<>();
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("SELECT id_reparacion, matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado FROM reparaciones WHERE id_mecanico=?")) {
-            sentencia.setInt(1, valor);
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                reparacionesEncontradas.add(new Reparacion(
-                        resultado.getInt("id_reparacion"),
-                        resultado.getString("matricula"),
-                        resultado.getInt("id_mecanico"),
-                        resultado.getString("descripcion"),
-                        resultado.getString("fecha"),
-                        resultado.getBigDecimal("horas_trabajo"),
-                        resultado.getString("estado")));
-            }
-            return reparacionesEncontradas;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        if (valor == null) return new ArrayList<>();
+        return consultarLista(select + " WHERE id_mecanico = ? ORDER BY id_reparacion", valor);
     }
 
     public List<Reparacion> listarPendientes() {
-        List<Reparacion> reparacionesEncontradas = new ArrayList<>();
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("SELECT id_reparacion, matricula, id_mecanico, descripcion, fecha, horas_trabajo, estado FROM reparaciones WHERE estado='PENDIENTE'")) {
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                reparacionesEncontradas.add(new Reparacion(
-                        resultado.getInt("id_reparacion"),
-                        resultado.getString("matricula"),
-                        resultado.getInt("id_mecanico"),
-                        resultado.getString("descripcion"),
-                        resultado.getString("fecha"),
-                        resultado.getBigDecimal("horas_trabajo"),
-                        resultado.getString("estado")));
-            }
-            return reparacionesEncontradas;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return consultarLista(select + " WHERE estado = ? ORDER BY id_reparacion", "PENDIENTE");
+    }
+
+    // La fecha se valida en Java (formato AAAA-MM-DD y que exista); el esquema solo guarda texto
+    private boolean esValido(Reparacion dato) {
+        return dato != null && texto(dato.getMatricula()) && dato.getIdMecanico() != null
+                && texto(dato.getDescripcion()) && fecha(dato.getFecha())
+                && dato.getHorasTrabajo() != null && dato.getHorasTrabajo().compareTo(BigDecimal.ZERO) >= 0
+                && ESTADOS.contains(dato.getEstado());
     }
 }

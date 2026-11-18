@@ -2,93 +2,37 @@ package es.ejemplo.taller.dao;
 
 import es.ejemplo.taller.modelo.Cliente;
 import java.sql.*;
-import java.util.*;
+
 /**
+ * DAO de la tabla clientes (id autogenerado). listar, buscarPorId y eliminar vienen de AbstractDao
  * @author AlejandroDonGar
- * ClienteDao
  */
-public class ClienteDao extends AbstractDao<Cliente> {
+public class ClienteDao extends AbstractDao<Cliente, Integer> {
 
     public ClienteDao(String url) {
-        super(url);
+        super(url, "clientes", "id_cliente", "id_cliente, nombre, email, telefono");
     }
-    
-    public List<Cliente> listar() {
-        List<Cliente> clientesEncontrados = new ArrayList<>();
-        try (Connection connection = abrir(url);
-            PreparedStatement sentencia = connection.prepareStatement("SELECT id_cliente, nombre, email, telefono FROM clientes")){
-            ResultSet resultado = sentencia.executeQuery();
-            while(resultado.next()) {
-                clientesEncontrados.add(
-                        new Cliente(
-                                resultado.getInt("id_cliente"),
-                                resultado.getString("nombre"),
-                                resultado.getString("email"),
-                                resultado.getString("telefono")));
-            }
-            return clientesEncontrados;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public Optional<Cliente> buscarPorId(Integer id) {
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("SELECT id_cliente, nombre, email, telefono FROM clientes WHERE id_cliente=?")) {
-            sentencia.setInt(1, id);
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                return Optional.of(new Cliente(
-                    resultado.getInt("id_cliente"),
-                    resultado.getString("nombre"),
-                    resultado.getString("email"),
-                    resultado.getString("telefono")
-                ));
-            }
-            return Optional.empty();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+    @Override
+    protected Cliente mapear(ResultSet rs) throws SQLException {
+        return new Cliente(rs.getInt("id_cliente"), rs.getString("nombre"),
+                rs.getString("email"), rs.getString("telefono"));
     }
 
     public int insertar(Cliente dato) {
-        if (dato == null
-            || dato.getNombre() == null || dato.getNombre().isEmpty()
-            || dato.getEmail() == null || dato.getEmail().isEmpty()
-            || dato.getTelefono() == null || dato.getTelefono().isEmpty()) {
-            return 0;
-        }
-        try (Connection connection = abrir(url);
-            PreparedStatement sentencia = connection.prepareStatement("INSERT INTO clientes (nombre, email, telefono) VALUES (?,?,?)")) {
-            sentencia.setString(1, dato.getNombre());
-            sentencia.setString(2, dato.getEmail());
-            sentencia.setString(3, dato.getTelefono());
-            return sentencia.executeUpdate();
-        } catch (SQLException e) {
-            return 0;
-        }
+        if (!esValido(dato)) return 0;
+        return insertarDevolviendoId("INSERT INTO clientes (nombre, email, telefono) VALUES (?,?,?)",
+                dato.getNombre(), dato.getEmail(), dato.getTelefono());
     }
 
     public int actualizar(Cliente dato) {
-        try (Connection connection = abrir(url);
-             PreparedStatement sentencia = connection.prepareStatement("UPDATE clientes SET nombre=?, email=?, telefono=? WHERE id_cliente=?")) {
-            sentencia.setInt(4, dato.getIdCliente());
-            sentencia.setString(1, dato.getNombre());
-            sentencia.setString(2, dato.getEmail());
-            sentencia.setString(3, dato.getTelefono());
-            return sentencia.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        if (!esValido(dato) || dato.getIdCliente() == null) return 0;
+        return ejecutar("UPDATE clientes SET nombre=?, email=?, telefono=? WHERE id_cliente=?",
+                dato.getNombre(), dato.getEmail(), dato.getTelefono(), dato.getIdCliente());
     }
 
-    public int eliminar(Integer id) {
-        try (Connection connection = abrir(url);
-            PreparedStatement sentencia = connection.prepareStatement("DELETE FROM clientes WHERE id_cliente = ?")) {
-            sentencia.setInt(1, id);
-            return sentencia.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    // Nombre y email obligatorios; el telefono puede ser null
+    private boolean esValido(Cliente dato) {
+        return dato != null && texto(dato.getNombre()) && texto(dato.getEmail());
     }
 }
