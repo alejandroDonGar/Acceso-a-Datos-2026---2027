@@ -1,0 +1,7 @@
+# Los scripts que se ejecutan en Linux (GitHub Actions, WSL) necesitan saltos de línea LF.
+# Con CRLF, Linux lee "#!/bin/sh\r" y falla con "bad interpreter".
+mvnw text eol=lf
+*.sh text eol=lf
+
+# Los scripts de Windows se quedan con CRLF
+*.cmd text eol=crlf
