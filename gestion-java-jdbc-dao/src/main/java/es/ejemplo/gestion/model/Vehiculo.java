@@ -1,5 +1,9 @@
 package es.ejemplo.gestion.model;
 
+/**
+ * Vehiculo de la tabla Vehiculos (matricula, marca, modelo y anio), inmutable
+ * @author AlejandroDonGar
+ */
 public class Vehiculo {
     private final String matricula;
     private final String marca;

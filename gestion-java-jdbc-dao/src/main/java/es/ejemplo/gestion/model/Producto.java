@@ -1,5 +1,9 @@
 package es.ejemplo.gestion.model;
 
+/**
+ * Producto de la tabla Productos (id, nombre y precio), inmutable
+ * @author AlejandroDonGar
+ */
 public class Producto {
     private final int id;
     private final String nombre;

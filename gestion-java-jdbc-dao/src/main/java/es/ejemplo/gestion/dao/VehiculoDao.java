@@ -14,10 +14,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * DAO de la tabla Vehiculos: CRUD, busquedas por marca y anio y recuento por marca sobre AbstractDao
  * @author AlejandroDonGar
- * VehiculoDao: CRUD y consultas sobre la tabla Vehiculos.
- * A diferencia de ProductoDao, no hereda de ConexionBD: la guarda en un atributo (composición),
- * que es como venía la plantilla. Las dos formas funcionan igual.
  */
 public class VehiculoDao extends AbstractDao<Vehiculo>{
 

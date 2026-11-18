@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * DAO de la tabla Productos: CRUD y busquedas por nombre y precio sobre AbstractDao
  * @author AlejandroDonGar
- * ProductoDao
  */
 public class ProductoDao extends AbstractDao<Producto> {
 

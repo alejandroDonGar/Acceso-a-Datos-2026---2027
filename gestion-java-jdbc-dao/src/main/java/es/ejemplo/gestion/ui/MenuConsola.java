@@ -10,7 +10,10 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Scanner;
 
-/** Interfaz por consola: no contiene SQL. */
+/**
+ * Interfaz por consola: no contiene SQL.
+ * @author AlejandroDonGar
+ */
 public class MenuConsola {
     private final Scanner entrada = new Scanner(System.in);
     private final ProductoDao productoDao;

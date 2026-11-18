@@ -8,6 +8,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Abre conexiones SQLite a partir de una URL jdbc:sqlite:, comprobando antes que el fichero existe
+ * @author AlejandroDonGar
+ */
 public class ConexionBD {
     private String url;
 

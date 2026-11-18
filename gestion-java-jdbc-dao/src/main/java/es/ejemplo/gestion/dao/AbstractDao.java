@@ -10,6 +10,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO generico: hereda la conexion de ConexionBD y tiene consultar(query), que recorre el ResultSet
+ * y convierte cada fila con mapperToClass, el metodo que implementa cada DAO hijo
+ * @author AlejandroDonGar
+ */
 public abstract class AbstractDao<T> extends ConexionBD {
 
     public AbstractDao(String url) {
