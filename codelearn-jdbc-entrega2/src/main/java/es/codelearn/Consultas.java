@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+ * Los 12 ejercicios de consultas SQL con JDBC: cada metodo abre su conexion con
+ * BaseDatos.conectar(), usa PreparedStatement y devuelve un valor, boolean o lista
  * @author AlejandroDonGar
- * Consultas
  */
-
-/** Ejercicios del alumnado: completa los 12 métodos sin cambiar sus firmas. */
 public final class Consultas {
     private Consultas() { }
 

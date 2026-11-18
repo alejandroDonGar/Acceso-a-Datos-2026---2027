@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/** Configuración interna de la base de datos. Los métodos de Consultas no reciben conexiones. */
+/**
+ * Configuración interna de la base de datos. Los métodos de Consultas no reciben conexiones.
+ * @author AlejandroDonGar
+ */
 public final class BaseDatos {
     private static String url = "jdbc:sqlite:datos/codelearn_modelos.sqlite3";
 
