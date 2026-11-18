@@ -44,7 +44,7 @@ public class VehiculoDao extends AbstractDao<Vehiculo>{
             PreparedStatement sentencia = connection.prepareStatement("SELECT matricula, marca, modelo, anio FROM Vehiculos WHERE matricula=?")) {
             sentencia.setString(1, matricula);
             ResultSet resultado = sentencia.executeQuery();
-            return resultado.next() ? Optional.of(vehiculoMapper(resultado)) : Optional.empty();
+            return resultado.next() ? Optional.of(mapperToClass(resultado)) : Optional.empty();
         } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e);
         }
@@ -93,7 +93,7 @@ public class VehiculoDao extends AbstractDao<Vehiculo>{
             sentencia.setString(1, texto);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
-                lista.add(vehiculoMapper(resultado));
+                lista.add(mapperToClass(resultado));
             }
         } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e);
@@ -109,7 +109,7 @@ public class VehiculoDao extends AbstractDao<Vehiculo>{
             sentencia.setInt(2, hasta);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
-                lista.add(vehiculoMapper(resultado));
+                lista.add(mapperToClass(resultado));
             }
         } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e);
@@ -139,9 +139,5 @@ public class VehiculoDao extends AbstractDao<Vehiculo>{
             throw new AplicationException(e.getMessage(), e);
         }
         return conteo;
-    }
-
-    private Vehiculo vehiculoMapper(ResultSet rs) {
-        return null;
     }
 }

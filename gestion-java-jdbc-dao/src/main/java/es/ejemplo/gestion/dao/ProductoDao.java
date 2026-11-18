@@ -42,7 +42,7 @@ public class ProductoDao extends AbstractDao<Producto> {
         PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE id=?")) {
         sentencia.setInt(1, id);
         ResultSet resultado = sentencia.executeQuery();
-        return resultado.next() ? Optional.of(productoMapper(resultado)) : Optional.empty();
+        return resultado.next() ? Optional.of(mapperToClass(resultado)) : Optional.empty();
     } catch (Exception e) {
         throw new AplicationException(e.getMessage(), e);
     }
@@ -63,8 +63,8 @@ public class ProductoDao extends AbstractDao<Producto> {
     public boolean actualizar(Producto producto) {
         try (Connection connection = this.obtenerConexion();
             PreparedStatement sentencia = connection.prepareStatement("UPDATE productos SET nombre=?, precio=? WHERE id=?")) {
-            sentencia.setDouble(1, producto.getPrecio());    
-            sentencia.setString(2, producto.getNombre());
+            sentencia.setString(1, producto.getNombre());
+            sentencia.setDouble(2, producto.getPrecio());
             sentencia.setInt(3, producto.getId());
             return sentencia.executeUpdate() > 0;
         } catch (Exception e) {
@@ -85,11 +85,12 @@ public class ProductoDao extends AbstractDao<Producto> {
     public List<Producto> buscarPorNombre(String texto) {
        List<Producto> listaDeNombres = new ArrayList<>();
         try (Connection connection = this.obtenerConexion();
-            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE nombre=?")) {
-            sentencia.setString(1, texto);
+            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE LOWER(nombre) LIKE LOWER(?) ORDER BY LOWER(nombre)")) {
+            // % delante y detras: busca el texto en cualquier parte del nombre
+            sentencia.setString(1, "%" + texto + "%");
             ResultSet resultado = sentencia.executeQuery();
             while(resultado.next()) {
-                listaDeNombres.add(productoMapper(resultado));
+                listaDeNombres.add(mapperToClass(resultado));
             }
         } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e.getCause());
@@ -100,12 +101,12 @@ public class ProductoDao extends AbstractDao<Producto> {
     public List<Producto> buscarPorPrecio(double minimo, double maximo) {
         List<Producto> listaDePrecios = new ArrayList<>();
         try (Connection connection = this.obtenerConexion();
-            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE precio BETWEEN ? AND ?")) {
+            PreparedStatement sentencia = connection.prepareStatement("SELECT id, nombre, precio FROM Productos WHERE precio BETWEEN ? AND ? ORDER BY precio, id")) {
             sentencia.setDouble(1, minimo);
             sentencia.setDouble(2, maximo);
             ResultSet resultado = sentencia.executeQuery();
             while(resultado.next()) {
-                listaDePrecios.add(productoMapper(resultado));
+                listaDePrecios.add(mapperToClass(resultado));
             }
         } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e.getCause());
@@ -126,13 +127,11 @@ public class ProductoDao extends AbstractDao<Producto> {
     public double precioMedio() {
         try (Connection connection = this.obtenerConexion();
             PreparedStatement sentencia = connection.prepareStatement("SELECT AVG(precio) FROM productos")) {
-            return sentencia.executeUpdate();
+            // Una consulta se lanza con executeQuery; AVG de una tabla vacia es NULL y getDouble lo devuelve como 0
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado.next() ? resultado.getDouble(1) : 0;
        } catch (Exception e) {
             throw new AplicationException(e.getMessage(), e.getCause());
        }
-    }
-
-    private Producto productoMapper(ResultSet rs) {
-        return null;
     }
 }
