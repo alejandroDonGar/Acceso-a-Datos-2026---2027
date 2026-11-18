@@ -4,63 +4,153 @@ import es.ejemplo.gestion.model.Vehiculo;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * DAO de la tabla Vehiculos (clave: matricula). Sigue el mismo patron que ProductoDao:
+ * SQL, parametros y mapeo aqui; la ejecucion en AbstractDao
+ * @author AlejandroDonGar
+ */
 public class VehiculoDao extends AbstractDao<Vehiculo> {
     public VehiculoDao(String url) { super(url); }
 
     @Override
     protected Optional<Vehiculo> mapRsToClass(ResultSet rs) {
-        // TODO: leer matricula, marca, modelo, anio con rs.getXXX(...)
-        // Capturar SQLException y RuntimeException aquí; nunca declarar throws.
-        return Optional.empty();
+        try {
+            return Optional.of(new Vehiculo(rs.getString("matricula"), rs.getString("marca"),
+                    rs.getString("modelo"), rs.getInt("anio")));
+        } catch (SQLException | RuntimeException e) {
+            registrar("mapRsToClass vehiculo", e);
+            return Optional.empty();
+        }
     }
 
     public List<Vehiculo> listar() {
-        // TODO: seguir el ejemplo de ProductoDao.listar()
-        return List.of();
+        String sql = "SELECT matricula,marca,modelo,anio FROM Vehiculos ORDER BY matricula";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            return consultar(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("listar vehiculos", e);
+            return List.of();
+        }
     }
 
     public Optional<Vehiculo> buscarPorId(String matricula) {
-        // TODO: SELECT WHERE matricula = ?; ps.setString(1, matricula)
-        return Optional.empty();
+        if (matricula == null) return Optional.empty();
+        String sql = "SELECT matricula,marca,modelo,anio FROM Vehiculos WHERE matricula=?";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, matricula);
+            return consultarUno(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("buscar vehiculo por matricula", e);
+            return Optional.empty();
+        }
     }
 
     public Optional<Vehiculo> buscarPorMatricula(String matricula) {
-        // TODO: delegar en buscarPorId(matricula)
-        return Optional.empty();
+        return buscarPorId(matricula);
     }
 
     public boolean eliminar(String matricula) {
-        // TODO: DELETE WHERE matricula = ?
-        return false;
+        if (matricula == null) return false;
+        String sql = "DELETE FROM Vehiculos WHERE matricula=?";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, matricula);
+            return ejecutar(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("eliminar vehiculo", e);
+            return false;
+        }
     }
 
     public boolean insertar(Vehiculo v) {
-        // TODO: validar e insertar
-        return false;
+        if (!esValido(v)) return false;
+        String sql = "INSERT INTO Vehiculos(matricula,marca,modelo,anio) VALUES (?,?,?,?)";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, v.getMatricula());
+            ps.setString(2, v.getMarca());
+            ps.setString(3, v.getModelo());
+            ps.setInt(4, v.getAnio());
+            return ejecutar(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("insertar vehiculo", e);
+            return false;
+        }
     }
 
     public boolean actualizar(Vehiculo v) {
-        // TODO: validar y actualizar
-        return false;
+        if (!esValido(v)) return false;
+        String sql = "UPDATE Vehiculos SET marca=?, modelo=?, anio=? WHERE matricula=?";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, v.getMarca());
+            ps.setString(2, v.getModelo());
+            ps.setInt(3, v.getAnio());
+            ps.setString(4, v.getMatricula());
+            return ejecutar(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("actualizar vehiculo", e);
+            return false;
+        }
     }
 
     public List<Vehiculo> buscarPorMarca(String texto) {
-        // TODO: LIKE sin distinguir mayúsculas
-        return List.of();
+        if (texto == null) return List.of();
+        String sql = "SELECT matricula,marca,modelo,anio FROM Vehiculos WHERE LOWER(marca) LIKE LOWER(?) ORDER BY matricula";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + texto + "%");
+            return consultar(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("buscar vehiculos por marca", e);
+            return List.of();
+        }
     }
 
     public List<Vehiculo> buscarPorAnio(int desde, int hasta) {
-        // TODO: BETWEEN inclusivo
-        return List.of();
+        String sql = "SELECT matricula,marca,modelo,anio FROM Vehiculos WHERE anio BETWEEN ? AND ? ORDER BY anio, matricula";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, desde);
+            ps.setInt(2, hasta);
+            return consultar(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("buscar vehiculos por anio", e);
+            return List.of();
+        }
     }
 
     public int contar() {
-        // TODO: consultarEntero(ps)
-        return 0;
+        String sql = "SELECT COUNT(*) FROM Vehiculos";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            return consultarEntero(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("contar vehiculos", e);
+            return 0;
+        }
     }
 
     public Map<String, Integer> contarPorMarca() {
-        // TODO: GROUP BY marca y consultarAgrupado(ps)
-        return Map.of();
+        String sql = "SELECT marca, COUNT(*) FROM Vehiculos GROUP BY marca ORDER BY marca";
+        try (Connection con = obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            return consultarAgrupado(ps);
+        } catch (SQLException | RuntimeException e) {
+            registrar("contar vehiculos por marca", e);
+            return Map.of();
+        }
+    }
+
+    // Mismas reglas que los CHECK de la tabla: matricula en mayusculas, textos no vacios y anio >= 1886
+    private boolean esValido(Vehiculo v) {
+        return v != null
+                && v.getMatricula() != null && !v.getMatricula().isBlank()
+                && v.getMatricula().equals(v.getMatricula().trim().toUpperCase())
+                && v.getMarca() != null && !v.getMarca().isBlank()
+                && v.getModelo() != null && !v.getModelo().isBlank()
+                && v.getAnio() >= 1886;
     }
 }
