@@ -6,15 +6,15 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import aula.tareas.modelo.Tarea;
 import aula.tareas.repository.ITareaRepository;
-import aula.tareas.repository.TareaRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 /**
  * @author AlejandroDonGar
  *
- * Clase TareaService
+ * Clase TareaServiceCsv
  */
-@Service
-public class TareaService {
+@Service("tareaServiceCsv")
+public class TareaServiceCsv implements ITareaService{
     private final AtomicLong secuencia = new AtomicLong();
     private final ConcurrentSkipListMap<Long, Tarea> tareas = new ConcurrentSkipListMap<>();
     private final ITareaRepository tareaRepository;
@@ -25,7 +25,7 @@ public class TareaService {
     // }
 
     // Como se hace en Spring
-    public TareaService(ITareaRepository tareaRepository) {
+    public TareaServiceCsv(@Qualifier("repositorioCsv") ITareaRepository tareaRepository) {
         this.tareaRepository = tareaRepository;
     }
 

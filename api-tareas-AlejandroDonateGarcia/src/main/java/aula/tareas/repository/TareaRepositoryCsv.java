@@ -4,6 +4,7 @@ import aula.tareas.modelo.Tarea;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.stereotype.Repository;
 
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +17,7 @@ import java.util.List;
  *
  * Clase TareaRepositoryCsv | Almacena en fichero
  */
+@Repository("repositorioCsv")
 public class TareaRepositoryCsv implements ITareaRepository {
 
     private Path path;
@@ -28,6 +30,7 @@ public class TareaRepositoryCsv implements ITareaRepository {
             .build();
 
     public TareaRepositoryCsv() {
+        // path = Path.of("data/tareas.csv"); <- Es lo mismo
         path = Path.of("data",  "tareas.csv");
     }
 
