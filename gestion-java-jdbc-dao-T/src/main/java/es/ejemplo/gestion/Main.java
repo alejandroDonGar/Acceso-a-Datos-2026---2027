@@ -5,6 +5,10 @@ import es.ejemplo.gestion.ui.MenuConsola;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Punto de entrada: abre el menu de consola sobre datos/gestion.sqlite3
+ * @author AlejandroDonGar
+ */
 public class Main {
     public static void main(String[] args) {
         String url = ConexionBD.normalizarUrl("jdbc:sqlite:datos/gestion.sqlite3");

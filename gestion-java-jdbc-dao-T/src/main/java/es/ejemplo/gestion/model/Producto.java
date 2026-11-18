@@ -1,6 +1,9 @@
 package es.ejemplo.gestion.model;
 
-/** Entidad Producto representada mediante una clase Java convencional. */
+/**
+ * Entidad Producto representada mediante una clase Java convencional.
+ * @author AlejandroDonGar
+ */
 public class Producto {
     private int id;
     private String nombre;

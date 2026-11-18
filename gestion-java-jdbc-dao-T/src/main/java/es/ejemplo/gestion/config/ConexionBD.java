@@ -10,7 +10,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Abre conexiones SQLite sin cerrarlas antes de devolverlas. */
+/**
+ * Abre conexiones SQLite sin cerrarlas antes de devolverlas.
+ * @author AlejandroDonGar
+ */
 public class ConexionBD {
     private static final Logger LOG = Logger.getLogger(ConexionBD.class.getName());
     private final String url;

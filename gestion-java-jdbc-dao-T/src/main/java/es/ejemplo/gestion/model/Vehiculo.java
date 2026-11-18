@@ -1,6 +1,9 @@
 package es.ejemplo.gestion.model;
 
-/** Entidad Vehiculo representada mediante una clase Java convencional. */
+/**
+ * Entidad Vehiculo representada mediante una clase Java convencional.
+ * @author AlejandroDonGar
+ */
 public class Vehiculo {
     private String matricula;
     private String marca;

@@ -5,7 +5,10 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
 
-/** Operaciones JDBC comunes. El DAO llamador cierra Connection y PreparedStatement. */
+/**
+ * Operaciones JDBC comunes. El DAO llamador cierra Connection y PreparedStatement.
+ * @author AlejandroDonGar
+ */
 public abstract class AbstractDao<T> extends ConexionBD {
     private static final Logger LOG = Logger.getLogger(AbstractDao.class.getName());
 
