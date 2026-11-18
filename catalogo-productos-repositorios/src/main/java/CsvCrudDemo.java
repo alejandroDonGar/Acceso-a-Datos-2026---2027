@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Primera version del CRUD sobre CSV, sin genericos ni interfaces: todo en una clase
+ * y leyendo el fichero entero en cada operacion. Se conserva para ver como evoluciona
+ * hacia IRepository + AbstractFileRepository
+ * @author AlejandroDonGar
+ */
 public class CsvCrudDemo {
     // Record lo que hace es que como no tiene definido las variables, las asigna solas, id se llamara id, etc.
     public record Producto(long id, String nombre, double precio) {}
