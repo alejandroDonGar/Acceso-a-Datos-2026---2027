@@ -1,5 +1,10 @@
 package com.docencia.herencia;
 
+/**
+ * Clase abstracta con los datos comunes de una persona (nombre, apellidos y edad).
+ * No se puede instanciar: se usa a traves de sus hijas, como Alumno
+ * @author AlejandroDonGar
+ */
 public abstract class Persona {
     private final String nombre;
     private final String apellidos;

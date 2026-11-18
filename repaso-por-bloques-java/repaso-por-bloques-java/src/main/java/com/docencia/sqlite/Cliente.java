@@ -1,5 +1,9 @@
 package com.docencia.sqlite;
 
+/**
+ * Modelo de un cliente guardado en la tabla de SQLite (dni, nombre, email y ciudad)
+ * @author AlejandroDonGar
+ */
 public class Cliente {
     private final String dni;
     private final String nombre;

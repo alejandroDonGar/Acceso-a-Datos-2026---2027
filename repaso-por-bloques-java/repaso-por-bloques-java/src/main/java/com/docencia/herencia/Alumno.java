@@ -1,5 +1,9 @@
 package com.docencia.herencia;
 
+/**
+ * Alumno: una Persona que ademas tiene numero de expediente
+ * @author AlejandroDonGar
+ */
 public class Alumno extends Persona {
     private final String expediente;
 
