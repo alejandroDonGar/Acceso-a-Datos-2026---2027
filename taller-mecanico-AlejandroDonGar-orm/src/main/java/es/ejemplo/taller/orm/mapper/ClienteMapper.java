@@ -3,6 +3,10 @@ package es.ejemplo.taller.orm.mapper;
 import es.ejemplo.taller.modelo.Cliente;
 import es.ejemplo.taller.orm.entity.ClienteEntity;
 
+/**
+ * Convierte entre Cliente (dominio) y ClienteEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public class ClienteMapper {
 
     public static ClienteEntity toEntity(Cliente cliente) {

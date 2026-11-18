@@ -1,5 +1,9 @@
 package es.ejemplo.taller.modelo;
 import java.math.BigDecimal;
+/**
+ * Mecanico del taller (id autogenerado, nombre, especialidad y tarifa por hora en BigDecimal)
+ * @author AlejandroDonGar
+ */
 public class Mecanico {
     private Integer idMecanico;
     private String nombre;

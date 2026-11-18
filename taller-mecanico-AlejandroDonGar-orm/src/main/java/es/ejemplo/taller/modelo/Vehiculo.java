@@ -1,4 +1,8 @@
 package es.ejemplo.taller.modelo;
+/**
+ * Vehiculo de un cliente; su clave es la matricula
+ * @author AlejandroDonGar
+ */
 public class Vehiculo {
     private String matricula;
     private String marca;

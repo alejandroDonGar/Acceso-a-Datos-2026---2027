@@ -1,5 +1,9 @@
 package es.ejemplo.taller.modelo;
 import java.math.BigDecimal;
+/**
+ * Pieza usada en una reparacion: cantidad y precio unitario en BigDecimal
+ * @author AlejandroDonGar
+ */
 public class PiezaReparacion {
     private Integer idPieza;
     private Integer idReparacion;

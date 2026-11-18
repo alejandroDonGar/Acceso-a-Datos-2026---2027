@@ -1,5 +1,9 @@
 package es.ejemplo.taller.modelo;
 import java.math.BigDecimal;
+/**
+ * Reparacion de un vehiculo hecha por un mecanico; fecha AAAA-MM-DD y horas en BigDecimal
+ * @author AlejandroDonGar
+ */
 public class Reparacion {
     private Integer idReparacion;
     private String matricula;

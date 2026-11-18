@@ -3,6 +3,10 @@ package es.ejemplo.taller.orm.mapper;
 import es.ejemplo.taller.modelo.Vehiculo;
 import es.ejemplo.taller.orm.entity.VehiculoEntity;
 
+/**
+ * Convierte entre Vehiculo y VehiculoEntity usando la FK plana idCliente, sin cargar la relacion LAZY
+ * @author AlejandroDonGar
+ */
 public class VehiculoMapper {
     public static VehiculoEntity toEntity(Vehiculo vehiculo) {
         return new VehiculoEntity(
