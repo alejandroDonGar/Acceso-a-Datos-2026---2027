@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Envoltorio XML para la lista de vehículos: raíz {@code <vehiculos>} y un
  * {@code <vehiculo>} por elemento. Ver {@link DocumentoProductos}.
+ * @author AlejandroDonGar
  */
 @JacksonXmlRootElement(localName = "vehiculos")
 public class DocumentoVehiculos {

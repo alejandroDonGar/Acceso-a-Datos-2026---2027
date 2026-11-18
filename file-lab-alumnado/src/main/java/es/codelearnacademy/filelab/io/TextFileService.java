@@ -16,6 +16,7 @@ import java.util.List;
  * <p>Sin opciones, {@code Files.writeString}/{@code Files.write} usan
  * {@code CREATE, TRUNCATE_EXISTING, WRITE}: crean el fichero si no existe y, si existe,
  * borran su contenido anterior.</p>
+ * @author AlejandroDonGar
  */
 public class TextFileService {
 

@@ -17,6 +17,7 @@ import java.util.OptionalLong;
  * <p>Se captura {@code IOException} y no {@code Exception}: así solo se tratan los
  * errores de E/S esperados y los errores de programación (p. ej. NullPointerException)
  * no se esconden.</p>
+ * @author AlejandroDonGar
  */
 public class FilesService {
 

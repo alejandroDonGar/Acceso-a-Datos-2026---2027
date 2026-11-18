@@ -11,6 +11,7 @@ package es.codelearnacademy.filelab.model;
  * @param nombre nombre del producto
  * @param precio precio unitario (no negativo)
  * @param stock  unidades disponibles (no negativo)
+ * @author AlejandroDonGar
  */
 public record Producto(long id, String nombre, double precio, int stock) {
 }

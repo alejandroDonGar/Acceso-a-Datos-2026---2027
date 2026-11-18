@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Repositorio de vehículos en JSON (mismo esquema que {@link ProductoJsonRepository}).
+ * @author AlejandroDonGar
  */
 public class VehiculoJsonRepository
         extends AbstractFileRepository<Vehiculo, String>

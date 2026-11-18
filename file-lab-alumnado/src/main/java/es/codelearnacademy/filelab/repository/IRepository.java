@@ -12,6 +12,7 @@ import java.util.Optional;
  *
  * @param <T>  tipo de la entidad (por ejemplo {@code Producto})
  * @param <ID> tipo de su identificador (por ejemplo {@code Long})
+ * @author AlejandroDonGar
  */
 public interface IRepository<T, ID> {
 

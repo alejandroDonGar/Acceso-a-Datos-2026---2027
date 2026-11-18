@@ -8,6 +8,7 @@ import java.nio.file.Path;
  * <p>Un {@code Path} es solo una ruta: crearlo o manipularlo NO toca el disco ni
  * comprueba que exista. Todos los métodos lanzan {@link NullPointerException} si
  * reciben argumentos nulos (fallar pronto con un mensaje claro).</p>
+ * @author AlejandroDonGar
  */
 public class PathService {
 

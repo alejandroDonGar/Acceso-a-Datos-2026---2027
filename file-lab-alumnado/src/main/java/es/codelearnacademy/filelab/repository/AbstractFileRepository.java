@@ -22,6 +22,7 @@ import java.util.Optional;
  *
  * @param <T>  tipo de entidad
  * @param <ID> tipo del identificador
+ * @author AlejandroDonGar
  */
 public abstract class AbstractFileRepository<T, ID> implements IRepository<T, ID> {
 

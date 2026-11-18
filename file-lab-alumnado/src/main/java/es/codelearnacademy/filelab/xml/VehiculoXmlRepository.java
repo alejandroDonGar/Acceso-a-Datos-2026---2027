@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Repositorio de vehículos en XML (mismo esquema que {@link ProductoXmlRepository}).
+ * @author AlejandroDonGar
  */
 public class VehiculoXmlRepository
         extends AbstractFileRepository<Vehiculo, String>

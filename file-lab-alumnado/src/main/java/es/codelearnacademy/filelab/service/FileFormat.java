@@ -2,6 +2,7 @@ package es.codelearnacademy.filelab.service;
 
 /**
  * Formatos de fichero soportados para guardar productos.
+ * @author AlejandroDonGar
  */
 public enum FileFormat {
     CSV,

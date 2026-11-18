@@ -17,6 +17,7 @@ import java.util.Properties;
  * <p>Cada operación vuelve a leer el fichero del disco, así siempre se trabaja con
  * su contenido actual. Ningún método público lanza {@link IOException}: los errores
  * se traducen en {@link Optional#empty()}, un mapa vacío o {@code false}.</p>
+ * @author AlejandroDonGar
  */
 public class PropertiesConfig {
 

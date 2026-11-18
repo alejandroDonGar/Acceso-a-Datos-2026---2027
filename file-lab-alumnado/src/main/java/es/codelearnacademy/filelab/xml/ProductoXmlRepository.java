@@ -15,6 +15,7 @@ import java.util.List;
  *
  * <p>Se lee y escribe un {@link DocumentoProductos}, no una lista directamente,
  * porque el XML necesita un elemento raíz.</p>
+ * @author AlejandroDonGar
  */
 public class ProductoXmlRepository
         extends AbstractFileRepository<Producto, Long>

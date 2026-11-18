@@ -9,6 +9,7 @@ import java.util.Optional;
  *
  * <p>Claves esperadas: {@code input.format}, {@code input.file}, {@code output.format}
  * y {@code output.file}.</p>
+ * @author AlejandroDonGar
  */
 public class ConfiguredDataBridge {
 

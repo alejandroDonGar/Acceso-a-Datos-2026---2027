@@ -20,6 +20,7 @@ import org.apache.commons.csv.CSVRecord;
  * Repositorio de vehículos en CSV. Igual que {@link ProductoCsvRepository} pero con
  * otra entidad: demuestra que {@link AbstractFileRepository} es genérico
  * (aquí {@code T = Vehiculo}, {@code ID = String}).
+ * @author AlejandroDonGar
  */
 public class VehiculoCsvRepository
         extends AbstractFileRepository<Vehiculo, String>

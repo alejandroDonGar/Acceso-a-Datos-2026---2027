@@ -3,6 +3,7 @@ package es.codelearnacademy.filelab.app;
 /**
  * Punto de entrada de la aplicación. Solo muestra un mensaje; la funcionalidad se
  * comprueba con los tests. Constructor privado: clase de utilidad que no se instancia.
+ * @author AlejandroDonGar
  */
 public final class FileLabApp {
 

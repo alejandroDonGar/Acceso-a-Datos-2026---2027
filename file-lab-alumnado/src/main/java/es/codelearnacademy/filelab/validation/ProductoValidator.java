@@ -7,6 +7,7 @@ import es.codelearnacademy.filelab.model.Producto;
  *
  * <p>Clase de utilidad: {@code final} (no se hereda) y constructor privado (no se
  * instancia); se usa con {@code ProductoValidator.validar(producto)}.</p>
+ * @author AlejandroDonGar
  */
 public final class ProductoValidator {
 

@@ -21,6 +21,7 @@ import org.apache.commons.csv.CSVRecord;
  *
  * <p>Formato: cabecera {@code id,nombre,precio,stock} y una fila por producto.
  * Solo implementa leer/escribir; el CRUD lo hereda de {@link AbstractFileRepository}.</p>
+ * @author AlejandroDonGar
  */
 public class ProductoCsvRepository
         extends AbstractFileRepository<Producto, Long>

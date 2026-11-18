@@ -12,6 +12,7 @@ import java.util.Optional;
  * <p>Recibe un {@link IProductoRepository} por el constructor (inyección de
  * dependencias): no sabe si los datos vienen de CSV, JSON, XML o memoria. Por eso los
  * tests pueden usar un repositorio en memoria.</p>
+ * @author AlejandroDonGar
  */
 public class ProductoService {
 

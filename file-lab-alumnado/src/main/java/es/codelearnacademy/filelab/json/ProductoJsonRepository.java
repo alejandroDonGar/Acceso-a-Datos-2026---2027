@@ -16,6 +16,7 @@ import java.util.List;
  *
  * <p>El fichero es un array: {@code [ {"id":1,"nombre":"...","precio":..,"stock":..}, ... ]}.
  * {@link ObjectMapper} convierte objetos Java ↔ JSON.</p>
+ * @author AlejandroDonGar
  */
 public class ProductoJsonRepository
         extends AbstractFileRepository<Producto, Long>

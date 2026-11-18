@@ -7,6 +7,7 @@ package es.codelearnacademy.filelab.model;
  * @param marca     marca
  * @param modelo    modelo
  * @param anio      año de fabricación
+ * @author AlejandroDonGar
  */
 public record Vehiculo(String matricula, String marca, String modelo, int anio) {
 }

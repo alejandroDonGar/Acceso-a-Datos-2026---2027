@@ -11,6 +11,7 @@ import java.util.List;
  * <p>No contiene código de CSV, JSON ni XML: pide los repositorios a
  * {@link RepositoryFactory} y trabaja solo con {@link IProductoRepository}.
  * Leer de uno y escribir en otro es suficiente para convertir.</p>
+ * @author AlejandroDonGar
  */
 public class DataBridgeService {
 

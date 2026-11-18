@@ -11,6 +11,7 @@ import java.nio.file.Path;
  *
  * <p>Es el único sitio que conoce las clases concretas CSV/JSON/XML. El resto del código
  * trabaja con la interfaz {@link IProductoRepository} y no sabe qué formato hay debajo.</p>
+ * @author AlejandroDonGar
  */
 public class RepositoryFactory {
 

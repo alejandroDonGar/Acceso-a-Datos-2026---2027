@@ -10,6 +10,7 @@ import java.nio.file.Path;
  * <p>{@code File} es la API clásica; se sigue viendo en código antiguo. Sus métodos
  * devuelven {@code boolean}/{@code null} en lugar de lanzar excepciones con detalle,
  * por eso hoy se prefiere {@code Path} + {@code Files}.</p>
+ * @author AlejandroDonGar
  */
 public class FileService {
 

@@ -18,6 +18,7 @@ import java.util.List;
  *   &lt;producto&gt;...&lt;/producto&gt;
  * &lt;/productos&gt;
  * </pre>
+ * @author AlejandroDonGar
  */
 @JacksonXmlRootElement(localName = "productos") // nombre del elemento raíz
 public class DocumentoProductos {
