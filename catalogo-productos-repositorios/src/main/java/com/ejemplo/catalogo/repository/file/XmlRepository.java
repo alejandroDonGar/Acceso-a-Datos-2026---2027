@@ -2,30 +2,31 @@ package com.ejemplo.catalogo.repository.file;
 
 import com.ejemplo.catalogo.model.Producto;
 import com.ejemplo.catalogo.model.ProductosXml;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ejemplo.catalogo.repository.IProductoRepository;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-public class XmlRepository extends AbstractFileRepository {
-    private final XmlMapper mapper;
+/**
+ * Repositorio de productos guardados en XML con Jackson (XmlMapper),
+ * usando la clase envoltorio ProductosXml para la etiqueta raiz productos
+ * @author AlejandroDonGar
+ */
+public class XmlRepository extends AbstractFileRepository<Producto, Long> implements IProductoRepository {
+    //El mapper transforma el fichero en clase. Con 2 condiciones,
+    //El fichero debe de ser XML
+    //Los parametros del fichero deben de ser los mismo que nuestra clase de record
+    private final XmlMapper mapper = new XmlMapper();
+
     public XmlRepository(Path path) {
         super(path);
-        productos = load();
-        mapper = new XmlMapper();
-        //El mapper transforma el fichero en clase. Con 2 condiciones,
-        //El fichero debe de ser JSON
-        //Los parametros del fichero deben de ser los mismo que nuestra clase de record
     }
+
     @Override
-    public void saveAll(List<Producto> productos) {
-        Path temporal = null;
+    protected void writeAll(List<Producto> productos) {
         try {
             // Creamos una instancia de ProductosXml
             // Seteamos los productos usanmdo el setter de la clase y la variable productos.
@@ -37,23 +38,20 @@ public class XmlRepository extends AbstractFileRepository {
 
         } catch (IOException e) {
             throw new UncheckedIOException("No se pudo guardar " + getPath(), e);
-        } finally {
         }
     }
+
     @Override
-    public List<Producto> load() {
+    protected List<Producto> readAll() {
         try {
             // Va a la clase ProductosXml y reconoce las etiquetas.
             // productosXml -> En esta intancia va a poner lo que se encuentra dentro de ProdcutosXml usando mapper.readValue(getpath().toFile(), ProductosXml.class)
-            // .clear -> Limpia la lista antigua
-            // .addAll(productosXml.getProductos()) -> mete la nueva informacion
+            // getProductos() -> devuelve la lista que ha leido; AbstractFileRepository la guarda en memoria
 
             ProductosXml productosXml = mapper.readValue(getPath().toFile(), ProductosXml.class);
-            productos.clear();
-            productos.addAll(productosXml.getProductos());
+            return productosXml.getProductos();
         } catch (IOException e) {
             throw new UncheckedIOException("No se pudo cargar " + getPath(), e);
         }
-        return productos;
     }
 }

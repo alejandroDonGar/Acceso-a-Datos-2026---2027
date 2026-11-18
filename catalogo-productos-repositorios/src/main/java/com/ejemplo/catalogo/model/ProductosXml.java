@@ -7,6 +7,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase envoltorio para el XML: representa la etiqueta raiz productos
+ * con un producto por cada etiqueta producto
+ * @author AlejandroDonGar
+ */
 //Busca en el archivo una etiqueta raiz llamada "productos". Esto solo ocurre cuando trabajamos con XML
 @JacksonXmlRootElement(localName = "productos")
 public class ProductosXml {
