@@ -89,6 +89,8 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
          entidad.getNombre() == null || entidad.getNombre().isEmpty() ||
          entidad.getEmail() == null || entidad.getEmail().isEmpty() ||
          entidad.getTelefono() == null || entidad.getTelefono().isEmpty()) return 0;
+      // Sin id no se sabe que fila actualizar: es un error de quien llama, no de la base de datos
+      if (entidad.getId() == null) throw new IllegalArgumentException("El cliente a actualizar no tiene id");
 
       try (Connection c = this.abrir();
          PreparedStatement st = c.prepareStatement("UPDATE clientes SET nombre = ?, email = ?, telefono = ? WHERE id = ?")) {
@@ -98,19 +100,22 @@ public final class ClienteDao extends AbstractDao implements IClienteDao {
          st.setInt(4, entidad.getId());
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new IllegalArgumentException(e.getMessage(), e);
+         throw new DaoException(e.getMessage(), e);
       }
    }
 
    @Override
    public int eliminar(Integer id) {
+      // Un id nulo se rechaza antes de abrir la conexion (NullPointerException, como piden los tests)
+      java.util.Objects.requireNonNull(id, "El id del cliente no puede ser null");
 
       try (Connection c = this.abrir();
          PreparedStatement st = c.prepareStatement("DELETE FROM clientes WHERE id = ?")) {
          st.setInt(1, id);
          return st.executeUpdate();
       } catch (Exception e) {
-         throw new NullPointerException();
+         // Con foreign_keys activo, borrar un cliente con mascotas falla (RESTRICT): se informa con DaoException
+         throw new DaoException(e.getMessage(), e);
       }
    }
 }
