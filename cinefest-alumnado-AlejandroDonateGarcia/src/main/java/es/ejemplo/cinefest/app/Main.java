@@ -4,6 +4,10 @@ import es.ejemplo.cinefest.dao.*;
 import es.ejemplo.cinefest.modelo.*;
 import java.util.Arrays;
 
+/**
+ * Programa de prueba: llama a un metodo de un DAO e imprime el resultado por consola
+ * @author AlejandroDonGar
+ */
 public class Main {
 
     public static void main(String[] args) {

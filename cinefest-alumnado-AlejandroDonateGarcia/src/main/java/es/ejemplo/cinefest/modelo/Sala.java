@@ -1,5 +1,9 @@
 package es.ejemplo.cinefest.modelo;
 
+/**
+ * Modelo de dominio: sala de una sede con su aforo
+ * @author AlejandroDonGar
+ */
 public class Sala {
     private Integer idSala;
     private String nombre;

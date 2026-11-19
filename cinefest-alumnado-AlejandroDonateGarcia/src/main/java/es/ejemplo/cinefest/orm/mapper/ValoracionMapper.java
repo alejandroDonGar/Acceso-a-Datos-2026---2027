@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Valoracion;
 import es.ejemplo.cinefest.orm.entity.ValoracionEntity;
 
+/**
+ * Convierte entre Valoracion (dominio) y ValoracionEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class ValoracionMapper {
     private ValoracionMapper() {}
     public static Valoracion desdeEntidad(ValoracionEntity source) { // Equivalente a -> toDomain

@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Sede;
 import es.ejemplo.cinefest.orm.entity.SedeEntity;
 
+/**
+ * Convierte entre Sede (dominio) y SedeEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class SedeMapper {
     private SedeMapper() {}
     public static Sede desdeEntidad(SedeEntity source) { // Equivalente a -> toDomain

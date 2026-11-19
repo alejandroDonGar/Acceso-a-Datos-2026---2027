@@ -1,5 +1,9 @@
 package es.ejemplo.cinefest.modelo;
 
+/**
+ * Modelo de dominio: pelicula del festival
+ * @author AlejandroDonGar
+ */
 public class Pelicula {
     private Integer idPelicula;
     private String titulo;

@@ -1,5 +1,9 @@
 package es.ejemplo.cinefest.modelo;
 
+/**
+ * Modelo de dominio: entrada de un espectador para una sesion (estado PAGADA, USADA o CANCELADA)
+ * @author AlejandroDonGar
+ */
 public class Entrada {
     private Integer idEntrada;
     private Integer idSesion;

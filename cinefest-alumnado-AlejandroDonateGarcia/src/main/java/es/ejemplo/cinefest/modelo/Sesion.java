@@ -1,5 +1,9 @@
 package es.ejemplo.cinefest.modelo;
 
+/**
+ * Modelo de dominio: sesion de una pelicula en una sala, con fecha, hora, precio y estado
+ * @author AlejandroDonGar
+ */
 public class Sesion {
     private Integer idSesion;
     private Integer idPelicula;

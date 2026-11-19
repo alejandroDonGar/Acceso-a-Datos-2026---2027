@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Sala;
 import es.ejemplo.cinefest.orm.entity.SalaEntity;
 
+/**
+ * Convierte entre Sala (dominio) y SalaEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class SalaMapper {
     private SalaMapper() {}
     public static Sala desdeEntidad(SalaEntity source) { // Equivalente a -> toDomain

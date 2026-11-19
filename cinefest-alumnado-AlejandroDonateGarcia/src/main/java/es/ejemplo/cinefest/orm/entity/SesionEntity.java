@@ -2,6 +2,10 @@ package es.ejemplo.cinefest.orm.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad JPA de la tabla sesiones
+ * @author AlejandroDonGar
+ */
 @Entity
 @Table(name = "sesiones")
 public class SesionEntity {

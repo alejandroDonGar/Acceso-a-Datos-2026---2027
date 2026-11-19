@@ -1,5 +1,9 @@
 package es.ejemplo.cinefest.modelo;
 
+/**
+ * Modelo de dominio: valoracion de 1 a 5 de un espectador a una pelicula
+ * @author AlejandroDonGar
+ */
 public class Valoracion {
     private Integer idValoracion;
     private Integer idPelicula;

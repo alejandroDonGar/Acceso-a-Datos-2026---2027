@@ -2,6 +2,10 @@ package es.ejemplo.cinefest.orm.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad JPA de la tabla valoraciones
+ * @author AlejandroDonGar
+ */
 @Entity
 @Table(name = "valoraciones")
 public class ValoracionEntity {

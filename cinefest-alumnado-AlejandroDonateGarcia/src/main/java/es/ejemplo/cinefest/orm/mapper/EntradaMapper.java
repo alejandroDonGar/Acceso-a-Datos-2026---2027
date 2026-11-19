@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Entrada;
 import es.ejemplo.cinefest.orm.entity.EntradaEntity;
 
+/**
+ * Convierte entre Entrada (dominio) y EntradaEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class EntradaMapper {
     private EntradaMapper() {}
     public static Entrada desdeEntidad(EntradaEntity source) { // Equivalente a -> toDomain

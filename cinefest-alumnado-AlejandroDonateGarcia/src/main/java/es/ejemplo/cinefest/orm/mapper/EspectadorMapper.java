@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Espectador;
 import es.ejemplo.cinefest.orm.entity.EspectadorEntity;
 
+/**
+ * Convierte entre Espectador (dominio) y EspectadorEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class EspectadorMapper {
     private EspectadorMapper() {}
     public static Espectador desdeEntidad(EspectadorEntity source) { // Equivalente a -> toDomain

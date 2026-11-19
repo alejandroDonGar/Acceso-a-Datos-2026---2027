@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Pelicula;
 import es.ejemplo.cinefest.orm.entity.PeliculaEntity;
 
+/**
+ * Convierte entre Pelicula (dominio) y PeliculaEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class PeliculaMapper {
     private PeliculaMapper() {}
     public static Pelicula desdeEntidad(PeliculaEntity source) { // Equivalente a -> toDomain

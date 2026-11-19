@@ -3,6 +3,10 @@ package es.ejemplo.cinefest.orm.mapper;
 import es.ejemplo.cinefest.modelo.Sesion;
 import es.ejemplo.cinefest.orm.entity.SesionEntity;
 
+/**
+ * Convierte entre Sesion (dominio) y SesionEntity (JPA)
+ * @author AlejandroDonGar
+ */
 public final class SesionMapper {
     private SesionMapper() {}
     public static Sesion desdeEntidad(SesionEntity source) { // Equivalente a -> toDomain
