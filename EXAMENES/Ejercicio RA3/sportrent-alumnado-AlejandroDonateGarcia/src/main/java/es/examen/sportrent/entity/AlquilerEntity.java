@@ -19,11 +19,11 @@ public class AlquilerEntity {
     @Column(name = "importe_total")
     private java.math.BigDecimal importeTotal;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dni", insertable = false, updatable = false)
+    @JoinColumn(name = "cliente_dni", nullable = false)
     private ClienteEntity cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codigo", insertable = false, updatable = false)
+    @JoinColumn(name = "equipo_codigo", nullable = false)
     private EquipoEntity equipo;
 
     protected AlquilerEntity() {
