@@ -124,12 +124,12 @@ public class PrestamoDao implements AutoCloseable {
                     return 0;
                 }
                 //Trabajamos con un nuevo clienteEntity porque cliente no se debe de conecatar a la bbdd, solo el clienteEntity
-                PrestamoEntity PrestamoEntityActualizado = PrestamoMapper.toEntity(dato);
-                a.setIdSocio(PrestamoEntityActualizado.getIdSocio());
-                a.setIdLibro(PrestamoEntityActualizado.getIdLibro());
-                a.setFechaPrestamo(PrestamoEntityActualizado.getFechaPrestamo());
-                a.setFechaLimite(PrestamoEntityActualizado.getFechaLimite());
-                a.setFechaDevolucion(PrestamoEntityActualizado.getFechaDevolucion());
+                PrestamoEntity prestamoEntityActualizado = PrestamoMapper.toEntity(dato);
+                a.setIdSocio(prestamoEntityActualizado.getIdSocio());
+                a.setIdLibro(prestamoEntityActualizado.getIdLibro());
+                a.setFechaPrestamo(prestamoEntityActualizado.getFechaPrestamo());
+                a.setFechaLimite(prestamoEntityActualizado.getFechaLimite());
+                a.setFechaDevolucion(prestamoEntityActualizado.getFechaDevolucion());
                 tx.commit();
                 return 1;
             } catch (Exception e) {
@@ -364,8 +364,7 @@ public class PrestamoDao implements AutoCloseable {
             try {
                 tx.begin();
                 PrestamoEntity p = em.find(PrestamoEntity.class, id);
-                // No existe, ya estaba devuelto o la fecha es anterior al prestamo
-                if(p==null || p.getFechaDevolucion()!=null || fecha.compareTo(p.getFechaPrestamo())<0) {
+                if(!sePuedeDevolver(p, fecha)) {
                     tx.rollback();
                     return 0;
                 }
@@ -382,9 +381,19 @@ public class PrestamoDao implements AutoCloseable {
         }
     }
 
+    // No se puede devolver si el prestamo no existe, ya estaba devuelto o la fecha es anterior al prestamo
+    private boolean sePuedeDevolver(PrestamoEntity p, String fecha) {
+        return p != null && p.getFechaDevolucion() == null && fecha.compareTo(p.getFechaPrestamo()) >= 0;
+    }
+
     
     /**
      * Cierra la EntityManagerFactory solo si la ha creado este DAO
      */
-    @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
+    public void close() {
+        // Si la factoria la paso otro (por ejemplo los tests), la cierra quien la creo
+        if (ownFactory && managerFactory.isOpen()) {
+            managerFactory.close();
+        }
+    }
 }

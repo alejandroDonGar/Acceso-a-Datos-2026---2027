@@ -115,13 +115,13 @@ public class LibroDao implements AutoCloseable {
                     return 0;
                 }
                 //Trabajamos con un nuevo clienteEntity porque cliente no se debe de conecatar a la bbdd, solo el clienteEntity
-                LibroEntity LibroEntityActualizado = LibroMapper.toEntity(dato);
-                a.setTitulo(LibroEntityActualizado.getTitulo());
-                a.setIsbn(LibroEntityActualizado.getIsbn());
-                a.setGenero(LibroEntityActualizado.getGenero());
-                a.setAnioPublicacion(LibroEntityActualizado.getAnioPublicacion());
-                a.setEjemplares(LibroEntityActualizado.getEjemplares());
-                a.setIdAutor(LibroEntityActualizado.getIdAutor());
+                LibroEntity libroEntityActualizado = LibroMapper.toEntity(dato);
+                a.setTitulo(libroEntityActualizado.getTitulo());
+                a.setIsbn(libroEntityActualizado.getIsbn());
+                a.setGenero(libroEntityActualizado.getGenero());
+                a.setAnioPublicacion(libroEntityActualizado.getAnioPublicacion());
+                a.setEjemplares(libroEntityActualizado.getEjemplares());
+                a.setIdAutor(libroEntityActualizado.getIdAutor());
                 tx.commit();
                 return 1;
             } catch (Exception e) {
@@ -444,5 +444,10 @@ public class LibroDao implements AutoCloseable {
     /**
      * Cierra la EntityManagerFactory solo si la ha creado este DAO
      */
-    @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
+    public void close() {
+        // Si la factoria la paso otro (por ejemplo los tests), la cierra quien la creo
+        if (ownFactory && managerFactory.isOpen()) {
+            managerFactory.close();
+        }
+    }
 }

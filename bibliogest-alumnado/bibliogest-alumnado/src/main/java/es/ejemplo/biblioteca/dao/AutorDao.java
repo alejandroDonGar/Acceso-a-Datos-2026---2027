@@ -119,10 +119,10 @@ public class AutorDao implements AutoCloseable {
                     return 0;
                 }
                 //Trabajamos con un nuevo clienteEntity porque cliente no se debe de conecatar a la bbdd, solo el clienteEntity
-                AutorEntity AutorEntityActualizado = AutorMapper.toEntity(dato);
-                a.setNombre(AutorEntityActualizado.getNombre());
-                a.setNacionalidad(AutorEntityActualizado.getNacionalidad());
-                a.setAnioNacimiento(AutorEntityActualizado.getAnioNacimiento());
+                AutorEntity autorEntityActualizado = AutorMapper.toEntity(dato);
+                a.setNombre(autorEntityActualizado.getNombre());
+                a.setNacionalidad(autorEntityActualizado.getNacionalidad());
+                a.setAnioNacimiento(autorEntityActualizado.getAnioNacimiento());
                 tx.commit();
                 return 1;
             } catch (Exception e) {
@@ -235,5 +235,10 @@ public class AutorDao implements AutoCloseable {
     /**
      * Cierra la EntityManagerFactory solo si la ha creado este DAO
      */
-    @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
+    public void close() {
+        // Si la factoria la paso otro (por ejemplo los tests), la cierra quien la creo
+        if (ownFactory && managerFactory.isOpen()) {
+            managerFactory.close();
+        }
+    }
 }

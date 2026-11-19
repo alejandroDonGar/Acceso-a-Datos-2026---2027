@@ -1,5 +1,6 @@
 package es.ejemplo.biblioteca.app;
-import es.ejemplo.biblioteca.dao.*;
+import es.ejemplo.biblioteca.dao.LibroDao;
+import es.ejemplo.biblioteca.dao.SocioDao;
 
 public final class Main {
     private Main() {}

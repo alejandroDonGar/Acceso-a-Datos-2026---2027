@@ -121,12 +121,12 @@ public class SocioDao implements AutoCloseable {
                     return 0;
                 }
                 //Trabajamos con un nuevo clienteEntity porque cliente no se debe de conecatar a la bbdd, solo el clienteEntity
-                SocioEntity SocioEntityActualizado = SocioMapper.toEntity(dato);
-                a.setNombre(SocioEntityActualizado.getNombre());
-                a.setEmail(SocioEntityActualizado.getEmail());
-                a.setTelefono(SocioEntityActualizado.getTelefono());
-                a.setFechaAlta(SocioEntityActualizado.getFechaAlta());
-                a.setActivo(SocioEntityActualizado.getActivo());
+                SocioEntity socioEntityActualizado = SocioMapper.toEntity(dato);
+                a.setNombre(socioEntityActualizado.getNombre());
+                a.setEmail(socioEntityActualizado.getEmail());
+                a.setTelefono(socioEntityActualizado.getTelefono());
+                a.setFechaAlta(socioEntityActualizado.getFechaAlta());
+                a.setActivo(socioEntityActualizado.getActivo());
                 tx.commit();
                 return 1;
             } catch (Exception e) {
@@ -301,5 +301,10 @@ public class SocioDao implements AutoCloseable {
     /**
      * Cierra la EntityManagerFactory solo si la ha creado este DAO
      */
-    @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
+    public void close() {
+        // Si la factoria la paso otro (por ejemplo los tests), la cierra quien la creo
+        if (ownFactory && managerFactory.isOpen()) {
+            managerFactory.close();
+        }
+    }
 }

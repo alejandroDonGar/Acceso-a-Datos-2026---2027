@@ -121,11 +121,11 @@ public class ReservaDao implements AutoCloseable {
                     return 0;
                 }
                 //Trabajamos con un nuevo clienteEntity porque cliente no se debe de conecatar a la bbdd, solo el clienteEntity
-                ReservaEntity ReservaEntityActualizado = ReservaMapper.toEntity(dato);
-                a.setIdSocio(ReservaEntityActualizado.getIdSocio());
-                a.setIdLibro(ReservaEntityActualizado.getIdLibro());
-                a.setFechaReserva(ReservaEntityActualizado.getFechaReserva());
-                a.setEstado(ReservaEntityActualizado.getEstado());
+                ReservaEntity reservaEntityActualizado = ReservaMapper.toEntity(dato);
+                a.setIdSocio(reservaEntityActualizado.getIdSocio());
+                a.setIdLibro(reservaEntityActualizado.getIdLibro());
+                a.setFechaReserva(reservaEntityActualizado.getFechaReserva());
+                a.setEstado(reservaEntityActualizado.getEstado());
                 tx.commit();
                 return 1;
             } catch (Exception e) {
@@ -289,5 +289,10 @@ public class ReservaDao implements AutoCloseable {
     /**
      * Cierra la EntityManagerFactory solo si la ha creado este DAO
      */
-    @Override public void close() {if(ownFactory && managerFactory.isOpen())managerFactory.close();}
+    public void close() {
+        // Si la factoria la paso otro (por ejemplo los tests), la cierra quien la creo
+        if (ownFactory && managerFactory.isOpen()) {
+            managerFactory.close();
+        }
+    }
 }
