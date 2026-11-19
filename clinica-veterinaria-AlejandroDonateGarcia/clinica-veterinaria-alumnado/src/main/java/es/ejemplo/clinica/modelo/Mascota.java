@@ -1,6 +1,9 @@
 package es.ejemplo.clinica.modelo;
 
-/** Entidad Mascota. Clase Java mutable con constructores y accesores. */
+/**
+ * Entidad Mascota. Clase Java mutable con constructores y accesores.
+ * @author AlejandroDonGar
+ */
 public class Mascota {
     private Integer id;
     private String nombre;

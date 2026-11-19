@@ -1,7 +1,10 @@
 package es.ejemplo.clinica.modelo;
 import java.math.BigDecimal;
 
-/** Entidad Veterinario. Clase Java mutable con constructores y accesores. */
+/**
+ * Entidad Veterinario. Clase Java mutable con constructores y accesores.
+ * @author AlejandroDonGar
+ */
 public class Veterinario {
     private Integer id;
     private String nombre;

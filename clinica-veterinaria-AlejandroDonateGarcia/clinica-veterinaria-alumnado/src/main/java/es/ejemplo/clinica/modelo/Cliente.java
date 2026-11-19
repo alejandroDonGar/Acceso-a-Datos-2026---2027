@@ -1,6 +1,9 @@
 package es.ejemplo.clinica.modelo;
 
-/** Entidad Cliente. Clase Java mutable con constructores y accesores. */
+/**
+ * Entidad Cliente. Clase Java mutable con constructores y accesores.
+ * @author AlejandroDonGar
+ */
 public class Cliente {
     private Integer id;
     private String nombre;

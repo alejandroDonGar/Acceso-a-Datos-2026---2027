@@ -1,7 +1,10 @@
 package es.ejemplo.clinica.modelo;
 import java.math.BigDecimal;
 
-/** Entidad Tratamiento. Clase Java mutable con constructores y accesores. */
+/**
+ * Entidad Tratamiento. Clase Java mutable con constructores y accesores.
+ * @author AlejandroDonGar
+ */
 public class Tratamiento {
     private Integer id;
     private Integer idConsulta;
