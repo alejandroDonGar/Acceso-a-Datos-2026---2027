@@ -11,6 +11,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.io.*;
 import java.util.*;
+/**
+ * Repositorio de personas guardadas en CSV con Apache Commons CSV
+ * @author AlejandroDonGar
+ */
 public class PersonaCsvRepository extends AbstractFileRepository<Persona,String> implements IPersonaRepository {
 
     CSVFormat input = CSVFormat.DEFAULT.builder()

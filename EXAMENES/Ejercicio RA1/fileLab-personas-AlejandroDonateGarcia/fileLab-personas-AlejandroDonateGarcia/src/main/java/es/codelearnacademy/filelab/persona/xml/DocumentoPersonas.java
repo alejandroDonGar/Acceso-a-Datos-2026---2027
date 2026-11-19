@@ -5,6 +5,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import es.codelearnacademy.filelab.model.Persona;
 import java.util.*;
 
+/**
+ * Clase envoltorio del XML: etiqueta raiz con la lista de personas
+ * @author AlejandroDonGar
+ */
 @JacksonXmlRootElement(localName = "personas")
 public class DocumentoPersonas {
 

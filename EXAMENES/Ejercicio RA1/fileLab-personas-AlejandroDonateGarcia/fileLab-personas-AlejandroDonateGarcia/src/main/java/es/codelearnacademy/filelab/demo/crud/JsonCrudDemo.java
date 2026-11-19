@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Ejemplo de CRUD sobre un fichero JSON, de referencia para los repositorios
+ * @author AlejandroDonGar
+ */
 public class JsonCrudDemo {
 
     private final Path path;

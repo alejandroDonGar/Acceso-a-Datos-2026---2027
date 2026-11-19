@@ -3,7 +3,10 @@ package es.codelearnacademy.filelab.repository;
 import java.util.List;
 import java.util.Optional;
 
-/** Contrato CRUD generico. Ninguna operacion publica propaga IOException. */
+/**
+ * Contrato CRUD generico. Ninguna operacion publica propaga IOException.
+ * @author AlejandroDonGar
+ */
 public interface IRepository<T, ID> {
 
     List<T> findAll();

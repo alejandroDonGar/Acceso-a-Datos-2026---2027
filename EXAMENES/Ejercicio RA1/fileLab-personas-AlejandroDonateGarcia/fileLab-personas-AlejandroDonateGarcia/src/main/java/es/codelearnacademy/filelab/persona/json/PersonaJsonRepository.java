@@ -8,6 +8,10 @@ import es.codelearnacademy.filelab.repository.AbstractFileRepository;
 import java.nio.file.*;
 import java.io.*;
 import java.util.*;
+/**
+ * Repositorio de personas guardadas en JSON con Jackson
+ * @author AlejandroDonGar
+ */
 public class PersonaJsonRepository extends AbstractFileRepository<Persona,String> implements IPersonaRepository {
 
     ObjectMapper mapper;

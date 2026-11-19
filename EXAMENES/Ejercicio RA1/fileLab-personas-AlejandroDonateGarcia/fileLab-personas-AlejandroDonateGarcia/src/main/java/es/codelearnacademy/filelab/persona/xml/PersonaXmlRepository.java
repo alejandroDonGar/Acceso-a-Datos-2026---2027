@@ -7,6 +7,10 @@ import es.codelearnacademy.filelab.repository.AbstractFileRepository;
 import java.nio.file.*;
 import java.io.*;
 import java.util.*;
+/**
+ * Repositorio de personas guardadas en XML con Jackson (XmlMapper)
+ * @author AlejandroDonGar
+ */
 public class PersonaXmlRepository extends AbstractFileRepository<Persona,String> implements IPersonaRepository {
 
     XmlMapper xmlMapper;

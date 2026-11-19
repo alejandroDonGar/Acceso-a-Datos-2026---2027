@@ -1,5 +1,9 @@
 package es.codelearnacademy.filelab.model;
 
+/**
+ * Modelo de un producto usado en los ejemplos de CRUD
+ * @author AlejandroDonGar
+ */
 public record Producto(long id, String nombre, double precio) {
 
     public Producto {
