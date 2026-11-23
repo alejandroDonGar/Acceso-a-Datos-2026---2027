@@ -3,14 +3,20 @@ package aula.tareas.mapper;
 import aula.tareas.entity.TareaEntityJdbc;
 import aula.tareas.api.TareaRequest;
 
+/**
+ * Convierte entre la tarea de la API ({@link TareaRequest}) y la entidad JDBC
+ * ({@link TareaEntityJdbc}). Métodos estáticos, igual que en el taller ORM.
+ *
+ * @author AlejandroDonGar
+ */
 public class TareaMapperJdbc {
 
-    static public TareaRequest toDomain(TareaEntityJdbc entityJdbc) {
-      return null;
+    static public TareaRequest toDomain(TareaEntityJdbc entity) {
+        return new TareaRequest(entity.getId(), entity.getTitulo());
     }
 
     static public TareaEntityJdbc toJdbc(TareaRequest tarea) {
-        return null;
+        return new TareaEntityJdbc(tarea.id(), tarea.titulo());
     }
 
     //crear mappers o constructores en tarea dependiento de lo que encesitemos

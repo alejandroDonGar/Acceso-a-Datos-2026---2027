@@ -10,47 +10,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Repositorio que guarda las tareas en el fichero {@code data/tarea.json} con Jackson.
+ * Carga la lista al arrancar, trabaja en memoria y reescribe el fichero en cada cambio.
+ *
+ * @author AlejandroDonGar
+ */
 @Repository("repositoryJson")
-public class TareaRepositoryJson implements ITareaRepository{
-    private final AtomicLong secuencia = new AtomicLong();
-    private Path path;
-    private ObjectMapper mapper;
-    private final String url = "jdbc:sqlite:data/tarea.sqlite3 / db";
-    private List<TareaRequest> lista;
+public class TareaRepositoryJson implements ITareaRepository {
+    private final Path path;
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final List<TareaRequest> lista;
 
     public TareaRepositoryJson() {
-        //path = Path.of("data", "tarea.json");
-        //path =Path.of("data/test.json");
-        /**
-        if (!Files.exists(path)) {
-            try {
-                Files.createFile(path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-         **/
         this("data/tarea.json");
-        lista = getAll();
     }
 
-    public TareaRepositoryJson(String url) {
-        path = Path.of(url);
-        if (!Files.exists(path)) {
-            try {
-                Files.createFile(path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public TareaRepositoryJson(String ruta) {
+        path = Path.of(ruta);
+        lista = getAll();
     }
 
     @Override
     public TareaRequest create(String titulo) {
-        long id = secuencia.incrementAndGet();
-        var tarea = new TareaRequest(id, titulo.strip());
+        var tarea = new TareaRequest(siguienteId(), titulo.strip());
         lista.add(tarea);
         saveAll(lista);
         return tarea;
@@ -58,22 +42,48 @@ public class TareaRepositoryJson implements ITareaRepository{
 
     @Override
     public boolean delete(long identificador) {
-        return false;
+        boolean borrada = lista.removeIf(tarea -> tarea.id() == identificador);
+        if (borrada) {
+            saveAll(lista);
+        }
+        return borrada;
     }
 
     @Override
     public List<TareaRequest> findAll() {
-       return List.copyOf(lista);
+        return List.copyOf(lista);
     }
 
     @Override
     public TareaRequest findById(long identificador) {
+        for (TareaRequest tarea : lista) {
+            if (tarea.id() == identificador) {
+                return tarea;
+            }
+        }
         return null;
     }
 
     @Override
     public TareaRequest update(TareaRequest tarea) {
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).id() == tarea.id()) {
+                TareaRequest actualizada = new TareaRequest(tarea.id(), tarea.titulo().strip());
+                lista.set(i, actualizada);
+                saveAll(lista);
+                return actualizada;
+            }
+        }
         return null;
+    }
+
+    // el siguiente id es el mayor que haya + 1, así no se repiten ids al reiniciar
+    private long siguienteId() {
+        long max = 0;
+        for (TareaRequest tarea : lista) {
+            max = Math.max(max, tarea.id());
+        }
+        return max + 1;
     }
 
     private void saveAll(List<TareaRequest> items) {
@@ -83,22 +93,21 @@ public class TareaRepositoryJson implements ITareaRepository{
                 Files.createDirectories(parent);
             }
             mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), items);
-        }catch (Exception exception) {
-            //Logger
+        } catch (IOException e) {
+            throw new RuntimeException("No se puede escribir " + path, e);
         }
-
     }
 
-    public List<TareaRequest> getAll() {
+    private List<TareaRequest> getAll() {
         try {
+            // fichero que no existe o vacío = todavía no hay tareas
+            if (Files.notExists(path) || Files.size(path) == 0) {
+                return new ArrayList<>();
+            }
             return new ArrayList<>(mapper.readValue(
                     path.toFile(), new TypeReference<List<TareaRequest>>() {}));
-        }catch (Exception exception) {
-            //Logger
-            return new ArrayList<>();
+        } catch (IOException e) {
+            throw new RuntimeException("No se puede leer " + path, e);
         }
-
     }
-
-
 }

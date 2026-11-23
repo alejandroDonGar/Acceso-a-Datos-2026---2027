@@ -1,5 +1,10 @@
 package aula.tareas.entity;
 
+/**
+ * Fila de la tabla {@code tareas_jdbc}; se convierte a {@code TareaRequest} con {@code TareaMapperJdbc}.
+ *
+ * @author AlejandroDonGar
+ */
 public class TareaEntityJdbc {
 
     private Long id;

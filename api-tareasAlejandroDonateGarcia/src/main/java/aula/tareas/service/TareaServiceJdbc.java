@@ -7,27 +7,42 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de tareas que trabaja con el repositorio JDBC (SQLite).
+ *
+ * @author AlejandroDonGar
+ */
 @Service("tareaServiceJdbc")
-public class TareaServiceJdbc implements ITareaService{
+public class TareaServiceJdbc implements ITareaService {
 
-    private final ITareaRepository tareaRepositoryJson;
+    private final ITareaRepository tareaRepositoryJdbc;
 
-    public TareaServiceJdbc(@Qualifier("repositoryJdbc") ITareaRepository tareaRepositoryJson) {
-        this.tareaRepositoryJson = tareaRepositoryJson;
+    public TareaServiceJdbc(@Qualifier("repositoryJdbc") ITareaRepository tareaRepositoryJdbc) {
+        this.tareaRepositoryJdbc = tareaRepositoryJdbc;
     }
 
     @Override
     public List<TareaRequest> listar() {
-        return tareaRepositoryJson.findAll();
+        return tareaRepositoryJdbc.findAll();
     }
 
     @Override
     public TareaRequest buscar(long id) {
-        return null;
+        return tareaRepositoryJdbc.findById(id);
     }
 
     @Override
     public TareaRequest crear(String titulo) {
-        return tareaRepositoryJson.create(titulo);
+        return tareaRepositoryJdbc.create(titulo);
+    }
+
+    @Override
+    public TareaRequest actualizar(long id, String titulo) {
+        return tareaRepositoryJdbc.update(new TareaRequest(id, titulo));
+    }
+
+    @Override
+    public boolean borrar(long id) {
+        return tareaRepositoryJdbc.delete(id);
     }
 }

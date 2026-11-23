@@ -1,6 +1,14 @@
 package aula.tareas.entity;
 
-@Entity(name = "tarea_orm")
+/**
+ * Futura entidad JPA de la tabla {@code tareas_orm}.
+ * El {@code @Entity} está comentado porque el pom aún no tiene
+ * {@code spring-boot-starter-data-jpa}: sin esa dependencia no compila.
+ * Al añadir JPA harán falta además {@code @Id}, {@code @GeneratedValue} y un constructor vacío.
+ *
+ * @author AlejandroDonGar
+ */
+//@Entity(name = "tarea_orm")
 public class TareaEntityORM {
 
     private Long id;

@@ -7,8 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de tareas que trabaja con el repositorio JSON.
+ *
+ * @author AlejandroDonGar
+ */
 @Service("tareaServiceJson")
-public class TareaServiceJson implements ITareaService{
+public class TareaServiceJson implements ITareaService {
 
     private final ITareaRepository tareaRepositoryJson;
 
@@ -23,11 +28,21 @@ public class TareaServiceJson implements ITareaService{
 
     @Override
     public TareaRequest buscar(long id) {
-        return null;
+        return tareaRepositoryJson.findById(id);
     }
 
     @Override
     public TareaRequest crear(String titulo) {
         return tareaRepositoryJson.create(titulo);
+    }
+
+    @Override
+    public TareaRequest actualizar(long id, String titulo) {
+        return tareaRepositoryJson.update(new TareaRequest(id, titulo));
+    }
+
+    @Override
+    public boolean borrar(long id) {
+        return tareaRepositoryJson.delete(id);
     }
 }

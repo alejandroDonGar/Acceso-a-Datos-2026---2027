@@ -7,8 +7,13 @@ import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository()
-public class TareaRepository implements ITareaRepository{
+/**
+ * Repositorio en memoria: las tareas viven en un mapa y se pierden al reiniciar.
+ *
+ * @author AlejandroDonGar
+ */
+@Repository("repositoryMemoria")
+public class TareaRepository implements ITareaRepository {
     private final AtomicLong secuencia = new AtomicLong();
     private final ConcurrentSkipListMap<Long, TareaRequest> tareas = new ConcurrentSkipListMap<>();
 
@@ -22,8 +27,8 @@ public class TareaRepository implements ITareaRepository{
 
     @Override
     public boolean delete(long identificador) {
-        tareas.remove(identificador);
-        return true;
+        // remove devuelve el valor borrado, o null si no existía
+        return tareas.remove(identificador) != null;
     }
 
     @Override
@@ -38,9 +43,12 @@ public class TareaRepository implements ITareaRepository{
 
     @Override
     public TareaRequest update(TareaRequest tarea) {
-        // buscar la tarea por el id
-        // actualizar la tarea
-        return null;
+        if (!tareas.containsKey(tarea.id())) {
+            return null;
+        }
+        // el record es inmutable: se guarda uno nuevo con el mismo id
+        var actualizada = new TareaRequest(tarea.id(), tarea.titulo().strip());
+        tareas.put(tarea.id(), actualizada);
+        return actualizada;
     }
-
 }

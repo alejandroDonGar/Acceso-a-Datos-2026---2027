@@ -1,5 +1,10 @@
 package aula.tareas.modelo;
 
+/**
+ * Modelo de dominio de una tarea (de momento no lo usa ninguna capa).
+ *
+ * @author AlejandroDonGar
+ */
 public class Tarea {
 
     private long id;
