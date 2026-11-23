@@ -1,49 +1,41 @@
 package aula.tareas.repository;
 
-import aula.tareas.modelo.Tarea;
+import aula.tareas.api.TareaRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-/**
- * @author AlejandroDonGar
- *
- * Clase repositoryJson | Almacena en fichero
- */
+
 @Repository("repositoryJson")
 public class TareaRepositoryJson implements ITareaRepository{
     private final AtomicLong secuencia = new AtomicLong();
     private Path path;
     private ObjectMapper mapper;
-    private final String url = "data/tareas.json";
-    /*
-    Posible alternativa -> private final String url = "jdbc:sqlite:data/tareas.sqlite";
-    Hacermos el metodo 'normalizar' para quitar el 'jdbc:sqlite:' y comprobar si el archivo existe
-     */
-    private List<Tarea> lista;
+    private final String url = "jdbc:sqlite:data/tarea.sqlite3 / db";
+    private List<TareaRequest> lista;
 
     public TareaRepositoryJson() {
-        //path = Path.of("data", "tareas.json");
+        //path = Path.of("data", "tarea.json");
         //path =Path.of("data/test.json");
-        /*
-         if (!Files.exists(path)) {
-         try {
-             Files.createFile(path);
-             } catch (IOException e) {
-                 throw new RuntimeException(e);
-             }
-         }
-        */
-        this("data/tareas.json");
+        /**
+        if (!Files.exists(path)) {
+            try {
+                Files.createFile(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+         **/
+        this("data/tarea.json");
         lista = getAll();
-        // String jdbcUrl = "jdbc:sqlite:data/tareas.sqlite3";
-        // ormFactory.crear(jdbcUrl);
     }
+
     public TareaRepositoryJson(String url) {
         path = Path.of(url);
         if (!Files.exists(path)) {
@@ -56,9 +48,9 @@ public class TareaRepositoryJson implements ITareaRepository{
     }
 
     @Override
-    public Tarea create(String titulo) {
+    public TareaRequest create(String titulo) {
         long id = secuencia.incrementAndGet();
-        var tarea = new Tarea(id, titulo.strip());
+        var tarea = new TareaRequest(id, titulo.strip());
         lista.add(tarea);
         saveAll(lista);
         return tarea;
@@ -68,20 +60,23 @@ public class TareaRepositoryJson implements ITareaRepository{
     public boolean delete(long identificador) {
         return false;
     }
+
     @Override
-    public List<Tarea> findAll() {
-        return List.copyOf(lista);
+    public List<TareaRequest> findAll() {
+       return List.copyOf(lista);
     }
+
     @Override
-    public Tarea findById(long identificador) {
-        return null;
-    }
-    @Override
-    public Tarea update(Tarea tarea) {
+    public TareaRequest findById(long identificador) {
         return null;
     }
 
-    private void saveAll(List<Tarea> items) {
+    @Override
+    public TareaRequest update(TareaRequest tarea) {
+        return null;
+    }
+
+    private void saveAll(List<TareaRequest> items) {
         try {
             Path parent = path.getParent();
             if (parent != null) {
@@ -91,14 +86,19 @@ public class TareaRepositoryJson implements ITareaRepository{
         }catch (Exception exception) {
             //Logger
         }
+
     }
-    public List<Tarea> getAll() {
+
+    public List<TareaRequest> getAll() {
         try {
             return new ArrayList<>(mapper.readValue(
-                    path.toFile(), new TypeReference<List<Tarea>>() {}));
+                    path.toFile(), new TypeReference<List<TareaRequest>>() {}));
         }catch (Exception exception) {
             //Logger
             return new ArrayList<>();
         }
+
     }
+
+
 }

@@ -1,6 +1,6 @@
 package aula.tareas.repository;
 
-import aula.tareas.modelo.Tarea;
+import aula.tareas.api.TareaRequest;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -12,63 +12,60 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-/**
- * @author AlejandroDonGar
- *
- * Clase TareaRepositoryCsv | Almacena en fichero
- */
-@Repository("repositorioCsv")
-public class TareaRepositoryCsv implements ITareaRepository {
 
-    private Path path;
+@Repository("repositoryCsv")
+public class TareaRepositoryCsv implements ITareaRepository{
+    private  Path path;
     private final CSVFormat inputFormat = CSVFormat.DEFAULT.builder()
             .setHeader()
-            .setSkipHeaderRecord(true)
-            .build();
+            .setSkipHeaderRecord(true).build();
     private final CSVFormat outputFormat = CSVFormat.DEFAULT.builder()
             .setHeader("id", "titulo")
             .build();
 
     public TareaRepositoryCsv() {
-        // path = Path.of("data/tareas.csv"); <- Es lo mismo
-        path = Path.of("data",  "tareas.csv");
+        path = Path.of("data", "tarea.csv");
     }
 
     @Override
-    public List<Tarea> findAll() {
-        if (Files.notExists(path)) {
-            return new ArrayList<>();
-        }
-        try {
-            List<Tarea> result = new ArrayList<>();
-            try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-                 CSVParser parser = inputFormat.parse(reader)) {
-                for (CSVRecord row : parser) {
-                    result.add(new Tarea(
-                            Long.parseLong(row.get("id")),
-                            row.get("nombre")));
-                }
-            }
-            return result;
-        } catch (Exception e) {
-            return List.of();
-        }
+    public TareaRequest create(String titulo) {
+        return null;
+    }
 
-    }
-    @Override
-    public Tarea findById(long identificador) {
-        return null;
-    }
-    @Override
-    public Tarea create(String titulo) {
-        return null;
-    }
     @Override
     public boolean delete(long identificador) {
         return false;
     }
+
     @Override
-    public Tarea update(Tarea tarea) {
+    public List<TareaRequest> findAll() {
+        if (Files.notExists(path)) {
+            return new ArrayList<>();
+        }
+        try {
+            List<TareaRequest> result = new ArrayList<>();
+            try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+                 CSVParser parser = inputFormat.parse(reader)) {
+                for (CSVRecord row : parser) {
+                    result.add(new TareaRequest(
+                            Long.parseLong(row.get("id")),
+                            row.get("titulo")));
+                }
+            }
+            return result;
+        }catch (Exception e) {
+            return List.of();
+        }
+
+    }
+
+    @Override
+    public TareaRequest findById(long identificador) {
+        return null;
+    }
+
+    @Override
+    public TareaRequest update(TareaRequest tarea) {
         return null;
     }
 }
