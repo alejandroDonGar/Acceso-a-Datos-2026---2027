@@ -6,5 +6,5 @@ public class TareaEntityCsv {
 
     public TareaEntityCsv() {}
 
-   
+   // Para las coleciones se usan los equals, por eso es 'class'.
 }

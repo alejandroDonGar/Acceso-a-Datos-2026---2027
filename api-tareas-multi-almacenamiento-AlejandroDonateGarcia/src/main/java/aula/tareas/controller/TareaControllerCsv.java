@@ -20,8 +20,6 @@ public class TareaControllerCsv {
     // TODO: Definir la ruta base /api/csv/tareas.
 
     public List<TareaResponse> listar() {
-        // TODO: Exponer el listado y convertir las tareas en respuestas.
-        throw new UnsupportedOperationException("Pendiente de implementar");
     }
 
     public ResponseEntity<TareaResponse> buscar(long id) {
