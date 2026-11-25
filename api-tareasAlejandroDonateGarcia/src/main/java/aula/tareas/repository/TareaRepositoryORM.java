@@ -6,11 +6,18 @@ import aula.tareas.entity.TareaEntity;
 import java.util.List;
 
 // ¿Por que se usa extends CrudRepository<> en vez de implements ITareaRepository? EL profesor dijo error de diseño. CRUD diferente separado de los ficheros
-public class TareaRepositoryEntity implements ITareaRepository {
+
+/**
+ *
+ * Se usa una clase la clase JpaRepository con <ClaseEntity,Long> con su CRUD basico
+ * Aquí no se usan los metodos PrepareStatement o ResultSet.
+ */
+
+public class TareaRepositoryORM implements ITareaRepository {
 
     private final ITareaRepositoryJpa tareaRepositoryJpa;
 
-    public TareaRepositoryEntity(ITareaRepositoryJpa tareaRepositoryJpa) {
+    public TareaRepositoryORM(ITareaRepositoryJpa tareaRepositoryJpa) {
         this.tareaRepositoryJpa = tareaRepositoryJpa;
     }
 

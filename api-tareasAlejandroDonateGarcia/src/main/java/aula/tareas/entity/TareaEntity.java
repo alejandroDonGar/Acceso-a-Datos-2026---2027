@@ -8,6 +8,11 @@ import jakarta.persistence.*;
  * {@code spring-boot-starter-data-jpa}: sin esa dependencia no compila.
  * Al añadir JPA harán falta además {@code @Id}, {@code @GeneratedValue} y un constructor vacío.
  *
+ * 25.11.2026 {
+ *  Si se trabajara con JDBC en vez de con ORM esta clase 'TareaEntity' estaria bien tenerla igualmente por si
+ *  en un futuro tuvieramos que añadirle estas anotaciones por si se cambia de sistema de trabajo con bbdd.
+ * }
+ *
  * @author AlejandroDonGar
  */
 @Entity(name = "tarea_orm")

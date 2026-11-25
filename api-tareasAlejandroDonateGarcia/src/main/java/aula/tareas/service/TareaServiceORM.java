@@ -13,11 +13,11 @@ import java.util.List;
  * @author AlejandroDonGar
  */
 @Service("tareaServiceEntity")
-public class TareaServiceEntity implements ITareaService {
+public class TareaServiceORM implements ITareaService {
 
     private final ITareaRepository tareaRepositoryEntity;
 
-    public TareaServiceEntity(@Qualifier("repositoryEntity") ITareaRepository tareaRepositoryEntity) {
+    public TareaServiceORM(@Qualifier("repositoryEntity") ITareaRepository tareaRepositoryEntity) {
         this.tareaRepositoryEntity = tareaRepositoryEntity;
     }
 

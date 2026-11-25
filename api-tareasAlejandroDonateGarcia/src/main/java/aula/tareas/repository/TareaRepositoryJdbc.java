@@ -17,6 +17,9 @@ import java.util.List;
  * Repositorio que guarda las tareas en la tabla {@code tareas_jdbc} de
  * {@code data/tareas.sqlite3} con JDBC puro ({@code PreparedStatement} y try-with-resources).
  *
+ * La coneccion la crea y cierra la propia clase.
+ * Aquí se hacen consultas a mano tipo -> 'select ... from ClaseEntity ... , ClaseEntity.class'
+ *
  * @author AlejandroDonGar
  */
 @Repository("repositoryJdbc")
